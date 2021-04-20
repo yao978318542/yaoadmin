@@ -17,16 +17,18 @@ class AdminBase extends BaseController
 
     public function initialize()
     {
+        session('uid',1);
         if(!session('uid')){
             $url = url('admin/login/index',["tip"=>1])->domain(true);
             header("location:" . $url);
             die;
         }
+        $module = app('http')->getName();
         $controller = request()->controller();
         $action = request()->action();
         $auth = new Auth();
-        if(!$auth->check($controller . '-' . $action, session('uid'))){
-            $this->error('你没有权限访问');
+        if(!$auth->check($module.'-'.$controller . '-' . $action, session('uid'))){
+            abort(501, '没有访问权限');
         }
     }
 }
