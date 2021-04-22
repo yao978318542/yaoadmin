@@ -30,5 +30,7 @@ class AdminBase extends BaseController
         if(!$auth->check($module.'-'.$controller . '-' . $action, session('uid'))){
             abort(501, '没有访问权限');
         }
+        //查找菜单
+
     }
 }
