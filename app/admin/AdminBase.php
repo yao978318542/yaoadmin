@@ -33,4 +33,53 @@ class AdminBase extends BaseController
         //查找菜单
 
     }
+    /**
+     * 验证数据
+     * @param $list
+     * @param $validate
+     * @return bool|\think\response\Json
+     */
+    protected function validateList($list,$validate){
+        try {
+            $this->validate($list, $validate);
+        } catch (ValidateException $e) {
+            // 验证失败 输出错误信息
+            return $this->validateError($e->getError());
+        }catch (\Exception $e) {
+            // 这是进行异常捕获
+            return $this->validateError($e->getError());
+        }
+        return true;
+    }
+    /**
+     * 操作错误的快捷方法
+     * @param int $errno 验证失败10000-10999 操作失败11000开始
+     * @param string $msg
+     * @param array $data
+     * @return \think\response\Json
+     */
+    public function error(int $errno, string $msg, array $data = [])
+    {
+        return json(['status' => $errno, 'message' => $msg, 'data' => $data]);
+    }
+
+
+    /**
+     * 操作成功的快捷方法
+     * @param string $msg
+     * @param array $data
+     * @return \think\response\Json
+     */
+    public function success( string $msg, array $data = []){
+        return json(['status' => 200, 'message' => $msg, 'data' => $data]);
+    }
+    /**
+     * 验证器验证页面传入参数数据失败的方法
+     * @param string $msg
+     * @return \think\response\Json
+     */
+    final public function validateError(string $msg,int $code=10001)
+    {
+        return $this->error($code, $msg);
+    }
 }

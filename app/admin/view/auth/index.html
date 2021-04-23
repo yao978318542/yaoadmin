@@ -187,7 +187,7 @@
     </div>
 </div>
 <!--添加菜单-->
-<div class="modal fade" tabindex="-1" role="dialog" id="compose-mail">
+<div class="modal fade" tabindex="-1" role="dialog" id="compose-mail" data-backdrop="static">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -198,17 +198,18 @@
                 <div class="nk-reply-form-header">
                     <div class="nk-reply-form-group">
                         <div class="nk-reply-form-input-group">
-                            <div>
+                            <form id="option_sub" action="#" >
+                                <div>
                                 <div class="form-group">
-                                    <label class="form-label" for="default-01">菜单名称</label>
+                                    <label class="form-label" >菜单名称</label>
                                     <div class="form-control-wrap">
-                                        <input type="text" class="form-control" id="default-01" placeholder="菜单名称">
+                                        <input type="text" class="form-control" id="option_title" name="option_title"  placeholder="菜单名称">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">菜单类型</label>
                                     <div class="form-control-wrap">
-                                        <select class="form-select form-control form-control-lg" onchange="option_change(this.value)">
+                                        <select class="form-select form-control form-control-lg" id="option_type" name="option_type" onchange="option_change(this.value)">
                                             <option value="0">请选择</option>
                                             <option value="1">主菜单</option>
                                             <option value="2">子菜单</option>
@@ -219,28 +220,37 @@
                                 <div class="form-group" id="parent_option" style="display: none">
                                     <label class="form-label">父级菜单</label>
                                     <div class="form-control-wrap">
-                                        <select class="form-select form-control form-control-lg">
-                                            <option value="default_option">请选择</option>
-                                            <option value="option_select_name">1</option>
-                                            <option value="option_select_name">2</option>
-                                            <option value="option_select_name">3</option>
+                                        <select class="form-select form-control form-control-lg" id="option_parent_id">
+                                            <option value="0">请选择</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group" id="option_icon" style="display: none">
-                                    <label class="form-label" for="default-01">菜单图标 <a target="_blank" href="http://yaoadmin.com/demo/src/html/components/misc/nioicon.html">图标库</a></label>
+                                    <label class="form-label">菜单图标 <a target="_blank" href="http://yaoadmin.com/demo/src/html/components/misc/nioicon.html">图标库</a></label>
                                     <div class="form-control-wrap">
-                                        <input type="text" class="form-control" id="default-02" placeholder="菜单图标">
+                                        <input type="text" class="form-control" id="option_icon_val" name="option_icon_val"  placeholder="菜单图标">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label" for="default-01">菜单规则</label>
+                                    <label class="form-label">菜单规则</label>
                                     <div class="form-control-wrap">
-                                        <input type="text" class="form-control" id="default-03" placeholder="Model-Controller-Action">
+                                        <input type="text" class="form-control" id="option_name" name="option_name" placeholder="Model-Controller-Action">
                                     </div>
                                 </div>
-                                <button type="button" id="submint" class="btn btn-primary">提交</button>
+                                <div class="form-group">
+                                    <label class="form-label">是否开启</label>
+                                    <div class="form-control-wrap  custom-switch">
+                                        <input type="checkbox" class="custom-control-input" checked id="option_status">
+                                        <label class="custom-control-label"  for="option_status">选择</label>
+                                    </div>
+                                </div>
+
+                                <button type="submit" id="submint" class="btn btn-primary">提交</button>
                             </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -249,11 +259,6 @@
         </div><!-- .modal-content -->
     </div><!-- .modla-dialog -->
 </div>
-<div class="d-flex justify-content-center">
-    <div class="spinner-border" role="status">
-        <span class="sr-only">Loading...</span>
-    </div>
-</div>
 <script type="application/javascript">
     function option_change(value) {
         if(value==1){
@@ -261,18 +266,133 @@
         }else{
             $("#option_icon").hide();
         }
-        if(value==2){
+        if(value>1){
+
             $("#parent_option").show();
         }else{
             $("#parent_option").hide();
         }
     }
-    function load_add() {
-        $("#submint").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>\n' +
+    window.onload = function(){
+        //添加父级菜单
+        // $('#option_parent_id').select2({
+        //     ajax: {
+        //         url: '/admin/auth/get_auth_list',
+        //         type : "post",
+        //         data: {"type":'obj'},
+        //         dataType: 'json',
+        //         processResults: function (data) {
+        //             return {
+        //                 results: data.data.tree_list
+        //             };
+        //         }
+        //     }
+        // });
+        $.ajax({
+            url: '/admin/auth/get_auth_list',
+            type : "post",
+            data: {"type":'option'},
+            dataType : "json",
+            success : function(data) {
+                $("#option_parent_id").html(data.data.tree_list);
+                $("#option_parent_id").trigger('change');//重新渲染
+            }
+        });
+
+
+        //模态框隐藏的时候初始化表单
+        $('#compose-mail').on('hide.bs.modal', function () {
+            $("#option_title").val("");
+            $('#option_type').val("0").trigger("change");
+            $('#option_parent_id').val("0").trigger("change");
+            $("#option_icon_val").val("").hide();
+            $("#option_name").val("");
+            $("#option_status").prop("checked",true);
+        })
+        //表单提交
+        $("#option_sub").validate({
+            rules:
+                {
+                    option_title:
+                        {
+                            required: true,
+                            maxlength: 15
+                        },
+                    option_type:
+                        {
+                            range:[1,3],
+                        },
+                    option_name:
+                        {
+                            required: true,
+                        },
+                },
+            messages:
+                {
+                    option_title:
+                        {
+                            required: "菜单名称不能为空",
+                            maxlength: "不能大于115位"
+                        },
+                    option_type:
+                        {
+                            range: "请选择菜单类型",
+                        },
+                    option_name:
+                        {
+                            required: "请填写菜单规则",
+                        },
+                },
+            submitHandler:function (form) {
+                load_add("submint");
+                console.log("验证通过");
+                $.ajax({
+                    url : "/admin/auth/add",
+                    type : "post",
+                    dataType : "json",
+                    data: {
+                        title:$("#option_title").val(),
+                        type: $("#option_type").val(),
+                        parent_id: $("#option_parent_id").val(),
+                        icon: $("#option_icon_val").val(),
+                        name: $("#option_name").val(),
+                        status: $("#option_status").val(),
+                    },
+                    success : function(data) {
+                        load_end("submint");
+                        if(data.status==200){
+                            toast(data.message);
+                            $('#compose-mail').modal('hide')
+                        }else{
+                            toast(data.message,"error");
+                        }
+                    }
+                });
+            }
+
+        });
+    }
+
+    /**
+     * @param msg
+     * @param type success,error.info,warning
+     * @param position http://yaoadmin.com/demo/src/assets/js/example-toastr.js?ver=2.2.0
+     */
+    function toast(msg,type="success",position) {
+        toastr.clear();
+        if(!position){
+            position={
+                position: "top-center"
+            }
+        }
+        NioApp.Toast(msg, type, position);
+    }
+    function load_add(id) {
+        $("#"+id).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>\n' +
             '  <span class="sr-only">Loading...</span>').attr("disabled",true);
     }
-    function load_end() {
-        $("#submint").html('提交').attr("disabled",false);
+    function load_end(id) {
+        $("#"+id).html('提交').attr("disabled",false);
     }
 </script>
 {/block}
