@@ -39,6 +39,7 @@ class Auth extends AdminBase
         $icon=input("post.icon/s","");
         $name=input("post.name/s","");
         $status=input("post.status/d",0);
+        $is_show=input("post.is_show/d",0);
         $res_validate = $this->validateList(input(), 'Auth.AuthAdd');
         if ($res_validate !== true) {
             return $res_validate;
@@ -50,6 +51,7 @@ class Auth extends AdminBase
                 "icon"=>$icon,
                 "name"=>$name,
                 "status"=>$status,
+                "is_show"=>$is_show,
             ]);
             if($id){
                 return $this->success("操作成功",["id"=>$id]);
