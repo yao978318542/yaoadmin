@@ -5,7 +5,7 @@ use think\facade\Db;
 class Auth extends Model{
     protected $table = "auth_rule";
     function auth_list($type){
-        $auths=Db::name("auth_rule")->where(["status"=>1])->select()->toArray();
+        $auths=Db::name("auth_rule")->where(["status"=>1])->order("sort desc,id desc")->select()->toArray();
         $tree_list=$this->auth_tree($auths,0,0);
         if($type=="obj"){
             return $this->auth_tree_option($tree_list,0);
@@ -26,6 +26,7 @@ class Auth extends Model{
                         "text"=>$auth["title"],
                         "parent_id"=>$auth["parent_id"],
                         "level"=>$level,
+                        "info"=>$auth,
                         "nodes"=>$this->auth_tree($auths,$auth['id'],$level),
                     ];
                 }

@@ -27,12 +27,25 @@ class Auth extends AdminBase
     function index(){
         return View::fetch();
     }
-
+    function list(){
+        $list=$this->AuthModel->auth_list('');
+        return $this->success('',["list"=>$list]);
+    }
+    function info(){
+        $id=input("post.id/d","");
+        $info=Db::name("auth_rule")->where(["id"=>$id])->find();
+        if(!empty($info)){
+            return $this->success('',["info"=>$info]);
+        }else{
+            return $this->error("11000","菜单信息错误");
+        }
+    }
     /**
      * 添加规则
      * @return bool|\think\response\Json
      */
     function add(){
+        $id=input("post.id/d","");
         $title=input("post.title/s","");
         $type=input("post.type/d","");
         $parent_id=input("post.parent_id/d","");
@@ -40,11 +53,12 @@ class Auth extends AdminBase
         $name=input("post.name/s","");
         $status=input("post.status/d",0);
         $is_show=input("post.is_show/d",0);
+        $sort=input("post.sort/d",0);
         $res_validate = $this->validateList(input(), 'Auth.AuthAdd');
         if ($res_validate !== true) {
             return $res_validate;
         }else{
-            $id=Db::name("auth_rule")->insertGetId([
+            $save_data=[
                 "title"=>$title,
                 "type"=>$type,
                 "parent_id"=>$parent_id,
@@ -52,8 +66,16 @@ class Auth extends AdminBase
                 "name"=>$name,
                 "status"=>$status,
                 "is_show"=>$is_show,
-            ]);
-            if($id){
+                "sort"=>$sort,
+            ];
+            if(!$id){
+                $id=Db::name("auth_rule")->insertGetId($save_data);
+                $res=true;
+            }else{
+                $res=Db::name("auth_rule")->where(["id"=>$id])->update($save_data);
+            }
+
+            if($res){
                 return $this->success("操作成功",["id"=>$id]);
             }else{
                 return $this->error("11000","操作失败请重试");

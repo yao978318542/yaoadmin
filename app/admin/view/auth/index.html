@@ -7,32 +7,39 @@
                 <div class="nk-block-head nk-block-head-sm">
                     <div class="nk-block-between">
                         <div class="nk-block-head-content">
-                            <h3 class="nk-block-title page-title">Projects</h3>
-                            <div class="nk-block-des text-soft">
-                                <p>You have total 95 projects.</p>
-                            </div>
+                            <h3 class="nk-block-title page-title">菜单管理</h3>
                         </div><!-- .nk-block-head-content -->
                         <div class="nk-block-head-content">
                             <div class="toggle-wrap nk-block-tools-toggle">
-                                <a href="#" class="btn btn-icon btn-trigger toggle-expand mr-n1" data-target="pageMenu"><em class="icon ni ni-menu-alt-r"></em></a>
+                                <a href="#" class="btn btn-icon btn-trigger toggle-expand mr-n1" data-target="pageMenu"><em class="icon ni ni-more-v"></em></a>
                                 <div class="toggle-expand-content" data-content="pageMenu">
                                     <ul class="nk-block-tools g-3">
                                         <li>
+                                            <div class="form-control-wrap">
+                                                <div class="form-icon form-icon-right">
+                                                    <em class="icon ni ni-search"></em>
+                                                </div>
+                                                <input type="text" class="form-control" id="default-04" placeholder="菜单名称">
+                                            </div>
+                                        </li>
+                                        <li>
                                             <div class="drodown">
-                                                <a href="#" class="dropdown-toggle btn btn-white btn-dim btn-outline-light" data-toggle="dropdown"><em class="d-none d-sm-inline icon ni ni-filter-alt"></em><span>Filtered By</span><em class="dd-indc icon ni ni-chevron-right"></em></a>
+                                                <a href="#" class="dropdown-toggle dropdown-indicator btn btn-outline-light btn-white" data-toggle="dropdown">状态</a>
                                                 <div class="dropdown-menu dropdown-menu-right">
                                                     <ul class="link-list-opt no-bdr">
-                                                        <li><a href="#"><span>Open</span></a></li>
-                                                        <li><a href="#"><span>Closed</span></a></li>
-                                                        <li><a href="#"><span>Onhold</span></a></li>
+                                                        <li><a href="#"><span>开启</span></a></li>
+                                                        <li><a href="#"><span>关闭</span></a></li>
                                                     </ul>
                                                 </div>
                                             </div>
                                         </li>
-                                        <li class="nk-block-tools-opt"><a href="#" class="btn btn-primary" data-toggle="modal" data-target="#compose-mail"><em class="icon ni ni-plus"></em><span>Add Project</span></a></li>
+                                        <li class="nk-block-tools-opt" data-toggle="modal" data-target="#compose-mail">
+                                            <a href="#" class="btn btn-icon btn-primary d-md-none"><em class="icon ni ni-plus"></em></a>
+                                            <a href="#" class="btn btn-primary d-none d-md-inline-flex"><em class="icon ni ni-plus"></em><span>添加菜单</span></a>
+                                        </li>
                                     </ul>
                                 </div>
-                            </div><!-- .toggle-wrap -->
+                            </div>
                         </div><!-- .nk-block-head-content -->
                     </div><!-- .nk-block-between -->
                 </div><!-- .nk-block-head -->
@@ -46,93 +53,28 @@
                                     <label class="custom-control-label" for="pid-all"></label>
                                 </div>
                             </th>
-                            <th class="nk-tb-col"><span class="sub-text">Project Name</span></th>
-                            <th class="nk-tb-col tb-col-xxl"><span class="sub-text">Client</span></th>
-                            <th class="nk-tb-col tb-col-lg"><span class="sub-text">Project Lead</span></th>
-                            <th class="nk-tb-col tb-col-lg"><span class="sub-text">Team</span></th>
-                            <th class="nk-tb-col tb-col-xxl"><span class="sub-text">Status</span></th>
-                            <th class="nk-tb-col tb-col-md"><span class="sub-text">Progress</span></th>
-                            <th class="nk-tb-col tb-col-mb"><span class="sub-text">Deadline</span></th>
+                            <th class="nk-tb-col"><span class="sub-text">菜单名称</span></th>
+                            <th class="nk-tb-col tb-col-lg"><span class="sub-text">菜单图标</span></th>
+                            <th class="nk-tb-col tb-col-xxl"><span class="sub-text">菜单规则</span></th>
+                            <th class="nk-tb-col tb-col-lg"><span class="sub-text">是否主菜单显示</span></th>
+                            <th class="nk-tb-col tb-col-lg"><span class="sub-text">是否开启</span></th>
+                            <th class="nk-tb-col tb-col-xxl"><span class="sub-text">排序</span></th>
                             <th class="nk-tb-col nk-tb-col-tools text-right">
                                 <div class="dropdown">
                                     <a href="#" class="btn btn-xs btn-trigger btn-icon dropdown-toggle mr-n1" data-toggle="dropdown" data-offset="0,5"><em class="icon ni ni-more-h"></em></a>
                                     <div class="dropdown-menu dropdown-menu-right">
                                         <ul class="link-list-opt no-bdr">
-                                            <li><a href="#"><em class="icon ni ni-check-round-cut"></em><span>Mark As Done</span></a></li>
-                                            <li><a href="#"><em class="icon ni ni-archive"></em><span>Mark As Archive</span></a></li>
-                                            <li><a href="#"><em class="icon ni ni-trash"></em><span>Remove Projects</span></a></li>
+                                            <li><a href="#"><em class="icon ni ni-check-round-cut"></em><span>全选</span></a></li>
+                                            <li><a href="#"><em class="icon ni ni-trash"></em><span>删除</span></a></li>
                                         </ul>
                                     </div>
                                 </div>
                             </th>
                         </tr><!-- .nk-tb-item -->
                         </thead>
-                        <tbody>
-                        <tr class="nk-tb-item">
-                            <td class="nk-tb-col nk-tb-col-check">
-                                <div class="custom-control custom-control-sm custom-checkbox notext">
-                                    <input type="checkbox" class="custom-control-input" id="pid-01">
-                                    <label class="custom-control-label" for="pid-01"></label>
-                                </div>
-                            </td>
-                            <td class="nk-tb-col">
-                                <a href="html/apps-kanban.html" class="project-title">
-                                    <div class="user-avatar sq bg-purple"><span>DD</span></div>
-                                    <div class="project-info">
-                                        <h6 class="title">Dashlite Development</h6>
-                                    </div>
-                                </a>
-                            </td>
-                            <td class="nk-tb-col tb-col-xxl">
-                                <span>Softnio</span>
-                            </td>
-                            <td class="nk-tb-col tb-col-lg">
-                                <span>Abu Bin Istiak</span>
-                            </td>
-                            <td class="nk-tb-col tb-col-lg">
-                                <ul class="project-users g-1">
-                                    <li>
-                                        <div class="user-avatar sm bg-primary"><span>A</span></div>
-                                    </li>
-                                    <li>
-                                        <div class="user-avatar sm bg-blue"><img src="/demo/src/images/avatar/b-sm.jpg" alt=""></div>
-                                    </li>
-                                    <li>
-                                        <div class="user-avatar bg-light sm"><span>+12</span></div>
-                                    </li>
-                                </ul>
-                            </td>
-                            <td class="nk-tb-col tb-col-xxl">
-                                <span>Open</span>
-                            </td>
-                            <td class="nk-tb-col tb-col-md">
-                                <div class="project-list-progress">
-                                    <div class="progress progress-pill progress-md bg-light">
-                                        <div class="progress-bar" data-progress="93.5"></div>
-                                    </div>
-                                    <div class="project-progress-percent">93.5%</div>
-                                </div>
-                            </td>
-                            <td class="nk-tb-col tb-col-mb">
-                                <span class="badge badge-dim badge-warning"><em class="icon ni ni-clock"></em><span>5 Days Left</span></span>
-                            </td>
-                            <td class="nk-tb-col nk-tb-col-tools">
-                                <ul class="nk-tb-actions gx-1">
-                                    <li>
-                                        <div class="drodown">
-                                            <a href="#" class="dropdown-toggle btn btn-sm btn-icon btn-trigger" data-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <ul class="link-list-opt no-bdr">
-                                                    <li><a href="html/apps-kanban.html"><em class="icon ni ni-eye"></em><span>View Project</span></a></li>
-                                                    <li><a href="#"><em class="icon ni ni-edit"></em><span>Edit Project</span></a></li>
-                                                    <li><a href="#"><em class="icon ni ni-check-round-cut"></em><span>Mark As Done</span></a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </td>
-                        </tr><!-- .nk-tb-item -->
+                        <tbody id="auth_list">
+
+                        <!-- .nk-tb-item -->
                         </tbody>
                     </table><!-- .nk-tb-list -->
                     <div class="card">
@@ -228,6 +170,13 @@
                                         </select>
                                     </div>
                                 </div>
+                                    <div class="form-group" id="option_is_show" style="display: none">
+                                        <label class="form-label">是否在菜单中显示</label>
+                                        <div class="form-control-wrap  custom-switch">
+                                            <input type="checkbox" class="custom-control-input" checked id="option_show"  value="1">
+                                            <label class="custom-control-label"  for="option_show">显示</label>
+                                        </div>
+                                    </div>
                                 <div class="form-group" id="option_icon" style="display: none">
                                     <label class="form-label">菜单图标 <a target="_blank" href="http://yaoadmin.com/demo/src/html/components/misc/nioicon.html">图标库</a></label>
                                     <div class="form-control-wrap">
@@ -240,10 +189,16 @@
                                         <input type="text" class="form-control" id="option_name" name="option_name" placeholder="Model-Controller-Action">
                                     </div>
                                 </div>
+                                    <div class="form-group">
+                                        <label class="form-label">菜单排序</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control" id="option_sort" name="option_sort" placeholder="越大越在前">
+                                        </div>
+                                    </div>
                                 <div class="form-group">
                                     <label class="form-label">是否开启</label>
                                     <div class="form-control-wrap  custom-switch">
-                                        <input type="checkbox" class="custom-control-input" checked id="option_status">
+                                        <input type="checkbox" class="custom-control-input" checked id="option_status"  value="1">
                                         <label class="custom-control-label"  for="option_status">选择</label>
                                     </div>
                                 </div>
@@ -260,6 +215,7 @@
     </div><!-- .modla-dialog -->
 </div>
 <script type="application/javascript">
+    var exit_id="";
     function option_change(value) {
         if(value==1){
             $("#option_icon").show();
@@ -267,27 +223,134 @@
             $("#option_icon").hide();
         }
         if(value>1){
-
             $("#parent_option").show();
         }else{
             $("#parent_option").hide();
         }
     }
+    //列表
+    function list(){
+        $.ajax({
+            url: '/admin/auth/list',
+            type : "post",
+            dataType : "json",
+            success : function(data) {
+                if(data.data.list.length){
+                    list_html(data.data.list);
+                }
+
+            }
+        });
+    }
+    function list_html(data){
+        for(let i=0;i<data.length;i++){
+            let item=data[i].info;
+            let icon_html=""
+            if(item.icon){
+                icon_html='<em class="icon ni ni-'+item.icon+'"></em>';
+            }
+            let status_html='<span class="badge badge-success">开启</span>';
+            if(item.status==0){
+                status_html='<span class="badge badge-danger">关闭</span>';
+            }
+            let show_html='<span class="badge badge-success">显示</span>';
+            if(item.is_show==0){
+                show_html='<span class="badge badge-danger">不显示</span>';
+            }
+            let title="";
+            let level=data[i].level;
+            if(level>1){
+                for(let i=0;i<level;i++){
+                    title+="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                }
+                title+="|-"+item.title;
+            }else{
+                title=item.title;
+            }
+            let html='<tr class="nk-tb-item">\n' +
+                '                            <td class="nk-tb-col nk-tb-col-check">\n' +
+                '                                <div class="custom-control custom-control-sm custom-checkbox notext">\n' +
+                '                                    <input type="checkbox" class="custom-control-input" id="pid-'+item.id+'" value="'+item.id+'">\n' +
+                '                                    <label class="custom-control-label" for="pid-'+item.id+'"></label>\n' +
+                '                                </div>\n' +
+                '                            </td>\n' +
+                '                            <td class="nk-tb-col">\n' +
+                '                                <a href="html/apps-kanban.html" class="project-title">\n' +
+                '                                    <div class="project-info">\n' +
+                '                                        <h6 class="title">'+title+'</h6>\n' +
+                '                                    </div>\n' +
+                '                                </a>\n' +
+                '                            </td>\n' +
+                '                            <td class="nk-tb-col tb-col-lg">\n' +icon_html +
+                '                            </td>\n' +
+                '                            <td class="nk-tb-col tb-col-xxl">\n' +
+                '                                <span>'+item.name+'</span>\n'+
+                '                            </td>\n' +
+                '                            <td class="nk-tb-col tb-col-lg">\n' +status_html +
+                '                            </td>\n' +
+                '                            <td class="nk-tb-col tb-col-lg">\n' +show_html+
+                '                            </td>\n' +
+                '                            <td class="nk-tb-col tb-col-xxl">\n' +
+                '                                <span>'+item.sort+'</span>\n' +
+                '                            </td>\n' +
+                '                            <td class="nk-tb-col nk-tb-col-tools">\n' +
+                '                                <ul class="nk-tb-actions gx-1">\n' +
+                '                                    <li>\n' +
+                '                                        <div class="drodown">\n' +
+                '                                            <a href="#" class="dropdown-toggle btn btn-sm btn-icon btn-trigger" data-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>\n' +
+                '                                            <div class="dropdown-menu dropdown-menu-right">\n' +
+                '                                                <ul class="link-list-opt no-bdr">\n' +
+                '                                                    <li onclick="auth_edit('+item.id+')"><a href="#"><em class="icon ni ni-edit"></em><span>修改</span></a></li>\n' +
+                '                                                    <li onclick="auth_del('+item.id+')"><a href="#"><em class="icon ni ni-check-round-cut"></em><span>删除</span></a></li>\n' +
+                '                                                </ul>\n' +
+                '                                            </div>\n' +
+                '                                        </div>\n' +
+                '                                    </li>\n' +
+                '                                </ul>\n' +
+                '                            </td>\n' +
+                '                        </tr>';
+            $('#auth_list').append(html);
+            if(data[i].nodes){
+                list_html(data[i].nodes);
+            }
+        }
+    }
+    //菜单修改
+    function auth_edit(id){
+        $.ajax({
+            url: '/admin/auth/info',
+            type : "post",
+            data: {"id":id},
+            dataType : "json",
+            success : function(data) {
+                if(data.status!=200){
+                    toast(data.message,"error");return;
+                }
+                exit_id=id;
+                let info=data.data.info;
+                $("#option_title").val(info.title);
+                $('#option_type').val(info.type).trigger("change");
+                $('#option_parent_id').val(info.parent_id).trigger("change");
+                $("#option_icon_val").val(info.icon);
+                $("#option_name").val(info.name);
+                if(info.status){
+                    $("#option_status").prop("checked",true);
+                }else{
+                    $("#option_status").prop("checked",false);
+                }
+                if(info.is_show){
+                    $("#option_show").prop("checked",true);
+                }else{
+                    $("#option_show").prop("checked",false);
+                }
+                $("#option_sort").val(info.sort);
+                $('#compose-mail').modal()
+            }
+        });
+    }
     window.onload = function(){
+        list();
         //添加父级菜单
-        // $('#option_parent_id').select2({
-        //     ajax: {
-        //         url: '/admin/auth/get_auth_list',
-        //         type : "post",
-        //         data: {"type":'obj'},
-        //         dataType: 'json',
-        //         processResults: function (data) {
-        //             return {
-        //                 results: data.data.tree_list
-        //             };
-        //         }
-        //     }
-        // });
         $.ajax({
             url: '/admin/auth/get_auth_list',
             type : "post",
@@ -305,9 +368,12 @@
             $("#option_title").val("");
             $('#option_type').val("0").trigger("change");
             $('#option_parent_id').val("0").trigger("change");
-            $("#option_icon_val").val("").hide();
+            $("#option_icon_val").val("");
+            $("#option_icon").hide();
             $("#option_name").val("");
             $("#option_status").prop("checked",true);
+            $("#option_show").prop("checked",true);
+            $("#option_sort").val("");
         })
         //表单提交
         $("#option_sub").validate({
@@ -351,12 +417,15 @@
                     type : "post",
                     dataType : "json",
                     data: {
+                        id:exit_id,
                         title:$("#option_title").val(),
                         type: $("#option_type").val(),
                         parent_id: $("#option_parent_id").val(),
                         icon: $("#option_icon_val").val(),
                         name: $("#option_name").val(),
                         status: $("#option_status").val(),
+                        is_show: $("#option_show").val(),
+                        sort: $("#option_sort").val(),
                     },
                     success : function(data) {
                         load_end("submint");
