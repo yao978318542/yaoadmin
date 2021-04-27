@@ -41,7 +41,7 @@ class Auth extends AdminBase
         }
     }
     /**
-     * 添加规则
+     * 添加/修改规则
      * @return bool|\think\response\Json
      */
     function add(){
@@ -82,6 +82,22 @@ class Auth extends AdminBase
             }
         }
     }
+
+    /**
+     * 删除规则
+     */
+    function del(){
+        $id=input("post.id/d","");
+        $return_data=$this->AuthModel->auth_id_all($id);
+        $return_data[]=$id;
+        $ids=implode(",",$return_data);
+        $re=Db::name("auth_rule")->whereIn("id",$ids)->delete();
+        return $this->success('操作成功');
+    }
+    /**
+     * 权限获取
+     * @return \think\response\Json
+     */
     function get_auth_list(){
         $type=input("post.type/s","tree");
         $tree_list=$this->AuthModel->auth_list($type);

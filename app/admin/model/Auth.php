@@ -81,4 +81,25 @@ class Auth extends Model{
         }
         return $option_html;
     }
+
+    /**
+     * 获取给定id的所有子权限不包含自己
+     * @param $id
+     * @return array
+     */
+    function auth_id_all($id){
+        $ids=[];
+        if(is_int($id)){
+            $id=[$id];
+        }
+        if(is_array($id)){
+            $id=implode(",",$id);
+        }
+        $child_ids=Db::name("auth_rule")->whereIn("parent_id",$id)->field("id")->column("id");
+        if(!empty($child_ids)){
+            $ids=$this->auth_id_all($child_ids);
+        }
+        $ids=array_merge($ids,$child_ids);
+        return $ids;
+    }
 }
