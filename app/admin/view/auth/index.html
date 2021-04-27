@@ -19,18 +19,16 @@
                                                 <div class="form-icon form-icon-right">
                                                     <em class="icon ni ni-search"></em>
                                                 </div>
-                                                <input type="text" class="form-control" id="default-04" placeholder="菜单名称">
+                                                <input type="text" class="form-control" id="keyword" placeholder="菜单名称">
                                             </div>
                                         </li>
                                         <li>
                                             <div class="drodown">
-                                                <a href="#" class="dropdown-toggle dropdown-indicator btn btn-outline-light btn-white" data-toggle="dropdown">状态</a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <ul class="link-list-opt no-bdr">
-                                                        <li><a href="#"><span>开启</span></a></li>
-                                                        <li><a href="#"><span>关闭</span></a></li>
-                                                    </ul>
-                                                </div>
+                                                <select class="form-select form-control form-control-lg" id="option_type_search" name="option_type_search" onchange="list()">
+                                                    <option value="0">请选择</option>
+                                                    <option value="1">开启</option>
+                                                    <option value="2">关闭</option>
+                                                </select>
                                             </div>
                                         </li>
                                         <li class="nk-block-tools-opt" data-toggle="modal" data-target="#compose-mail">
@@ -47,12 +45,6 @@
                     <table class="nk-tb-list is-separate nk-tb-ulist">
                         <thead>
                         <tr class="nk-tb-item nk-tb-head">
-                            <th class="nk-tb-col nk-tb-col-check">
-                                <div class="custom-control custom-control-sm custom-checkbox notext">
-                                    <input type="checkbox" class="custom-control-input" id="pid-all">
-                                    <label class="custom-control-label" for="pid-all"></label>
-                                </div>
-                            </th>
                             <th class="nk-tb-col"><span class="sub-text">菜单名称</span></th>
                             <th class="nk-tb-col tb-col-lg"><span class="sub-text">菜单图标</span></th>
                             <th class="nk-tb-col tb-col-xxl"><span class="sub-text">菜单规则</span></th>
@@ -60,15 +52,7 @@
                             <th class="nk-tb-col tb-col-lg"><span class="sub-text">是否开启</span></th>
                             <th class="nk-tb-col tb-col-xxl"><span class="sub-text">排序</span></th>
                             <th class="nk-tb-col nk-tb-col-tools text-right">
-                                <div class="dropdown">
-                                    <a href="#" class="btn btn-xs btn-trigger btn-icon dropdown-toggle mr-n1" data-toggle="dropdown" data-offset="0,5"><em class="icon ni ni-more-h"></em></a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <ul class="link-list-opt no-bdr">
-                                            <li><a href="#"><em class="icon ni ni-check-round-cut"></em><span>全选</span></a></li>
-                                            <li><a href="#"><em class="icon ni ni-trash"></em><span>删除</span></a></li>
-                                        </ul>
-                                    </div>
-                                </div>
+                                <span class="sub-text">操作</span>
                             </th>
                         </tr><!-- .nk-tb-item -->
                         </thead>
@@ -77,52 +61,6 @@
                         <!-- .nk-tb-item -->
                         </tbody>
                     </table><!-- .nk-tb-list -->
-                    <div class="card">
-                        <div class="card-inner">
-                            <div class="nk-block-between-md g-3">
-                                <div class="g">
-                                    <ul class="pagination justify-content-center justify-content-md-start">
-                                        <li class="page-item"><a class="page-link" href="#">Prev</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                        <li class="page-item"><span class="page-link"><em class="icon ni ni-more-h"></em></span></li>
-                                        <li class="page-item"><a class="page-link" href="#">6</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">7</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                                    </ul><!-- .pagination -->
-                                </div>
-                                <div class="g">
-                                    <div class="pagination-goto d-flex justify-content-center justify-content-md-start gx-3">
-                                        <div>Page</div>
-                                        <div>
-                                            <select class="form-select form-select-sm" data-search="on" data-dropdown="xs center">
-                                                <option value="page-1">1</option>
-                                                <option value="page-2">2</option>
-                                                <option value="page-4">4</option>
-                                                <option value="page-5">5</option>
-                                                <option value="page-6">6</option>
-                                                <option value="page-7">7</option>
-                                                <option value="page-8">8</option>
-                                                <option value="page-9">9</option>
-                                                <option value="page-10">10</option>
-                                                <option value="page-11">11</option>
-                                                <option value="page-12">12</option>
-                                                <option value="page-13">13</option>
-                                                <option value="page-14">14</option>
-                                                <option value="page-15">15</option>
-                                                <option value="page-16">16</option>
-                                                <option value="page-17">17</option>
-                                                <option value="page-18">18</option>
-                                                <option value="page-19">19</option>
-                                                <option value="page-20">20</option>
-                                            </select>
-                                        </div>
-                                        <div>OF 102</div>
-                                    </div>
-                                </div><!-- .pagination-goto -->
-                            </div><!-- .nk-block-between -->
-                        </div><!-- .card-inner -->
-                    </div><!-- .card -->
                 </div><!-- .nk-block -->
             </div>
         </div>
@@ -230,6 +168,8 @@
     }
     //列表
     function list(){
+        $('#auth_list').html("");
+        let keyword=$("#keyword").val();
         $.ajax({
             url: '/admin/auth/list',
             type : "post",
@@ -268,12 +208,6 @@
                 title=item.title;
             }
             let html='<tr class="nk-tb-item">\n' +
-                '                            <td class="nk-tb-col nk-tb-col-check">\n' +
-                '                                <div class="custom-control custom-control-sm custom-checkbox notext">\n' +
-                '                                    <input type="checkbox" class="custom-control-input" id="pid-'+item.id+'" value="'+item.id+'">\n' +
-                '                                    <label class="custom-control-label" for="pid-'+item.id+'"></label>\n' +
-                '                                </div>\n' +
-                '                            </td>\n' +
                 '                            <td class="nk-tb-col">\n' +
                 '                                <a href="html/apps-kanban.html" class="project-title">\n' +
                 '                                    <div class="project-info">\n' +
@@ -348,6 +282,32 @@
             }
         });
     }
+    //菜单删除
+    function auth_del(id){
+        Swal.fire({
+            title: '确定删除吗？',
+            text: "删除后无法还原！",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes'
+        }).then(function (result) {
+            console.log(result);
+            if (result.value) {
+                $.ajax({
+                    url: '/admin/auth/del',
+                    type: "post",
+                    data: {"id": id},
+                    dataType: "json",
+                    success: function (data) {
+                        Swal.fire(data.message, '您的权限已被删除', 'success');
+                        list();
+                    }
+                })
+
+            }
+        });
+
+    }
     window.onload = function(){
         list();
         //添加父级菜单
@@ -374,6 +334,7 @@
             $("#option_status").prop("checked",true);
             $("#option_show").prop("checked",true);
             $("#option_sort").val("");
+            exit_id=""
         })
         //表单提交
         $("#option_sub").validate({
@@ -432,6 +393,7 @@
                         if(data.status==200){
                             toast(data.message);
                             $('#compose-mail').modal('hide')
+                            list();
                         }else{
                             toast(data.message,"error");
                         }
