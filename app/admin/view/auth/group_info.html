@@ -1,0 +1,132 @@
+{extend name="Public:index" /}
+{block name="main"}
+<div class="nk-content ">
+    <div class="container-fluid">
+        <div class="nk-content-inner">
+            <div class="nk-content-body">
+                <div class="components-preview wide-md mx-auto">
+
+                    <div class="nk-block nk-block-lg">
+                        <div class="nk-block-head">
+                            <div class="nk-block-head-content">
+                                <h4 class="title nk-block-title">Switch Style</h4>
+                                <div class="nk-block-des">
+                                    <p>The switch markup of a <code>.custom-control</code> <code class="code-fnc">checkbox</code> but uses the <code>.custom-switch</code> class to render a toggle switch.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="code-block">
+                            <div id="tree"></div>
+                        </div>
+                        <!-- .code-block -->
+                    </div>
+                    <!-- .nk-block -->
+                </div><!-- .components-preview -->
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .glyphicon-plus:before {
+        content: "\2b";
+    }
+    .glyphicon-minus:before {
+        content: "\2212";
+    }
+    .glyphicon-check:before {
+        content: "\e067";
+    }
+    .glyphicon-unchecked:before {
+        content: "\e157";
+    }
+</style>
+<script src="/demo/src/assets/js/bootstrap-treeview.js"></script>
+<script type="application/javascript">
+    window.onload = function(){
+        $.ajax({
+            url: '/admin/auth/get_auth_list',
+            type : "post",
+            dataType : "json",
+            success : function(data) {
+                console.log(data);
+                let tree=data.data.tree_list;
+                $('#tree').treeview({
+                    data: tree,
+                    showIcon: false,
+                    showCheckbox: true,
+                    onNodeChecked:nodeChecked ,
+                    onNodeUnchecked:nodeUnchecked
+                });
+
+
+            }
+        });
+        var nodeCheckedSilent = false;
+        function nodeChecked (event, node){
+            if(nodeCheckedSilent){
+                return;
+            }
+            nodeCheckedSilent = true;
+            checkAllParent(node);
+            checkAllSon(node);
+            nodeCheckedSilent = false;
+        }
+        var nodeUncheckedSilent = false;
+        function nodeUnchecked  (event, node){
+            if(nodeUncheckedSilent)
+                return;
+            nodeUncheckedSilent = true;
+            uncheckAllParent(node);
+            uncheckAllSon(node);
+            nodeUncheckedSilent = false;
+        }
+        //选中全部父节点
+        function checkAllParent(node){
+            $('#tree').treeview('checkNode',node.nodeId,{silent:true});
+            var parentNode = $('#tree').treeview('getParent',node.nodeId);
+            if(!("nodeId" in parentNode)){
+                return;
+            }else{
+                checkAllParent(parentNode);
+            }
+        }
+        //取消全部父节点
+        function uncheckAllParent(node){
+            $('#tree').treeview('uncheckNode',node.nodeId,{silent:true});
+            var siblings = $('#tree').treeview('getSiblings', node.nodeId);
+            var parentNode = $('#tree').treeview('getParent',node.nodeId);
+            if(!("nodeId" in parentNode)) {
+                return;
+            }
+            var isAllUnchecked = true;  //是否全部没选中
+            for(var i in siblings){
+                if(siblings[i].state.checked){
+                    isAllUnchecked=false;
+                    break;
+                }
+            }
+            if(isAllUnchecked){
+                uncheckAllParent(parentNode);
+            }
+        }
+        //级联选中所有子节点
+        function checkAllSon(node){
+            $('#tree').treeview('checkNode',node.nodeId,{silent:true});
+            if(node.nodes!=null&&node.nodes.length>0){
+                for(var i in node.nodes){
+                    checkAllSon(node.nodes[i]);
+                }
+            }
+        }
+        //级联取消所有子节点
+        function uncheckAllSon(node){
+            $('#tree').treeview('uncheckNode',node.nodeId,{silent:true});
+            if(node.nodes!=null&&node.nodes.length>0){
+                for(var i in node.nodes){
+                    uncheckAllSon(node.nodes[i]);
+                }
+            }
+        }
+    }
+</script>
+{/block}

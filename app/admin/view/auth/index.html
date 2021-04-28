@@ -16,7 +16,7 @@
                                     <ul class="nk-block-tools g-3">
                                         <li>
                                             <div class="form-control-wrap">
-                                                <div class="form-icon form-icon-right">
+                                                <div class="form-icon form-icon-right" onclick="list()">
                                                     <em class="icon ni ni-search"></em>
                                                 </div>
                                                 <input type="text" class="form-control" id="keyword" placeholder="菜单名称">
@@ -26,8 +26,8 @@
                                             <div class="drodown">
                                                 <select class="form-select form-control form-control-lg" id="option_type_search" name="option_type_search" onchange="list()">
                                                     <option value="0">请选择</option>
-                                                    <option value="1">开启</option>
-                                                    <option value="2">关闭</option>
+                                                    <option value="2">开启</option>
+                                                    <option value="1">关闭</option>
                                                 </select>
                                             </div>
                                         </li>
@@ -166,13 +166,28 @@
             $("#parent_option").hide();
         }
     }
+    //添加父级菜单
+    function parent_opad() {
+        $.ajax({
+            url: '/admin/auth/get_auth_list',
+            type : "post",
+            data: {"type":'option'},
+            dataType : "json",
+            success : function(data) {
+                $("#option_parent_id").html(data.data.tree_list);
+                $("#option_parent_id").trigger('change');//重新渲染
+            }
+        });
+    }
     //列表
     function list(){
         $('#auth_list').html("");
         let keyword=$("#keyword").val();
+        let status=$("#option_type_search").val();
         $.ajax({
             url: '/admin/auth/list',
             type : "post",
+            data:{"keyword":keyword,"status":status},
             dataType : "json",
             success : function(data) {
                 if(data.data.list.length){
@@ -310,18 +325,7 @@
     }
     window.onload = function(){
         list();
-        //添加父级菜单
-        $.ajax({
-            url: '/admin/auth/get_auth_list',
-            type : "post",
-            data: {"type":'option'},
-            dataType : "json",
-            success : function(data) {
-                $("#option_parent_id").html(data.data.tree_list);
-                $("#option_parent_id").trigger('change');//重新渲染
-            }
-        });
-
+        parent_opad();
 
         //模态框隐藏的时候初始化表单
         $('#compose-mail').on('hide.bs.modal', function () {
@@ -394,6 +398,7 @@
                             toast(data.message);
                             $('#compose-mail').modal('hide')
                             list();
+                            parent_opad();
                         }else{
                             toast(data.message,"error");
                         }

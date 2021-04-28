@@ -15,6 +15,7 @@
 @font-face { font-family: 'DM Sans'; src: url("../fonts/DMSans-Medium.eot"); src: local("DM Sans Medium"), local("DMSans-Medium"), url("../fonts/DMSans-Medium.eot?#iefix") format("embedded-opentype"), url("../fonts/DMSans-Medium.woff2") format("woff2"), url("../fonts/DMSans-Medium.woff") format("woff"), url("../fonts/DMSans-Medium.ttf") format("truetype"); font-weight: 500; font-style: normal; }
 
 @font-face { font-family: 'DM Sans'; src: url("../fonts/DMSans-Regular.eot"); src: local("DM Sans Regular"), local("DMSans-Regular"), url("../fonts/DMSans-Regular.eot?#iefix") format("embedded-opentype"), url("../fonts/DMSans-Regular.woff2") format("woff2"), url("../fonts/DMSans-Regular.woff") format("woff"), url("../fonts/DMSans-Regular.ttf") format("truetype"); font-weight: normal; font-style: normal; }
+@font-face { font-family: 'Glyphicons Halflings'; src: url("../fonts/glyphicons-halflings-regular.eot"); src: local("Glyphicons Halflings"), url("../fonts/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"), url("../fonts/glyphicons-halflings-regular.woff2") format("woff2"), url("../fonts/glyphicons-halflings-regular.woff") format("woff"), url("../fonts/glyphicons-halflings-regular.ttf") format("truetype"); font-weight: normal; font-style: normal; }
 
 /** Bootstrap (https://getbootstrap.com/)  */
 :root { --blue: #559bfb; --indigo: #2c3782; --purple: #816bff; --pink: #ff63a5; --red: #e85347; --orange: #ffa353; --yellow: #f4bd0e; --green: #1ee0ac; --teal: #20c997; --cyan: #09c2de; --white: #fff; --gray: #6c757d; --gray-dark: #343a40; --primary: #854fff; --secondary: #364a63; --success: #1ee0ac; --info: #09c2de; --warning: #f4bd0e; --danger: #e85347; --dark: #1c2b46; --gray: #8091a7; --light: #e5e9f2; --lighter: #f5f6fa; --breakpoint-xs: 0; --breakpoint-mb: 420px; --breakpoint-sm: 576px; --breakpoint-md: 768px; --breakpoint-lg: 992px; --breakpoint-xl: 1200px; --breakpoint-xxl: 1540px; --font-family-sans-serif: ("DM Sans", sans-serif), "Helvetica Neue", Arial, "Noto Sans", sans-serif; --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
@@ -25,7 +26,7 @@ html { font-family: sans-serif; line-height: 1.15; -webkit-text-size-adjust: 100
 
 article, aside, figcaption, figure, footer, header, hgroup, main, nav, section { display: block; }
 
-body { margin: 0; font-family: "DM Sans", sans-serif, "Helvetica Neue", Arial, "Noto Sans", sans-serif; font-size: 0.875rem; font-weight: 400; line-height: 1.65; color: #526484; text-align: left; background-color: #f5f6fa; }
+body { margin: 0; font-family: "DM Sans", sans-serif, "Helvetica Neue", Arial, "Noto Sans", sans-serif,"Glyphicons Halflings"; font-size: 0.875rem; font-weight: 400; line-height: 1.65; color: #526484; text-align: left; background-color: #f5f6fa; }
 
 [tabindex="-1"]:focus:not(:focus-visible) { outline: 0 !important; }
 

@@ -28,7 +28,14 @@ class Auth extends AdminBase
         return View::fetch();
     }
     function list(){
-        $list=$this->AuthModel->auth_list('');
+        $type=input("post.type/s","");
+        $keyword=input("post.keyword/s","");
+        $status=input("post.status/d",0);
+        $retutn_type=0;
+        if($keyword||$status>0){
+            $retutn_type=1;
+        }
+        $list=$this->AuthModel->auth_list($type,$keyword,$status,$retutn_type);
         return $this->success('',["list"=>$list]);
     }
     function info(){
@@ -99,9 +106,15 @@ class Auth extends AdminBase
      * @return \think\response\Json
      */
     function get_auth_list(){
-        $type=input("post.type/s","tree");
-        $tree_list=$this->AuthModel->auth_list($type);
+        $type=input("post.type/s","obj");
+        $tree_list=$this->AuthModel->auth_list("obj",'',2);
         return $this->success("",["tree_list"=>$tree_list]);
+    }
+    function group_index(){
+        return View::fetch();
+    }
+    function group_info(){
+        return View::fetch();
     }
 
 }
