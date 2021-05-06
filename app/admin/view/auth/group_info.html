@@ -57,6 +57,7 @@
         content: "\e157";
     }
 </style>
+<script src="/demo/src/assets/js/public.js"></script>
 <script src="/demo/src/assets/js/bootstrap-treeview.js"></script>
 <script type="application/javascript">
     var tree_obj;
@@ -146,17 +147,17 @@
             }
         }
         //表单提交
-        $("#option_sub").validate({
+        $("#group_sub").validate({
             rules:
                 {
-                    option_title:
+                    group_title:
                         {
                             required: true,
                             maxlength: 15
                         },
                 },
             messages:{
-                option_title:
+                group_title:
                     {
                         required: "分组名称不能为空",
                         maxlength: "不能大于15位"
@@ -165,6 +166,9 @@
             submitHandler:function (form) {
                 //获取有所选中的节点
                 let checked=$('#tree').treeview('getChecked');
+                if(!checked.length){
+                    toast('请选择权限','error');return;
+                }
                 $.ajax({
                     url: "/admin/auth/group_add",
                     type: "post",

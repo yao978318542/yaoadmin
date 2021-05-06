@@ -117,7 +117,9 @@ class Auth extends AdminBase
         return View::fetch();
     }
     function group_add(){
-
+        $id=input("post.id/d","");
+        $title=input("post.title/s","");
+        $title=input("post.rules/s","");
     }
 
 }
