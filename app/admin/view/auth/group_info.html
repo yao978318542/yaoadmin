@@ -9,14 +9,31 @@
                     <div class="nk-block nk-block-lg">
                         <div class="nk-block-head">
                             <div class="nk-block-head-content">
-                                <h4 class="title nk-block-title">Switch Style</h4>
+                                <h4 class="title nk-block-title">权限分组</h4>
                                 <div class="nk-block-des">
-                                    <p>The switch markup of a <code>.custom-control</code> <code class="code-fnc">checkbox</code> but uses the <code>.custom-switch</code> class to render a toggle switch.</p>
+                                    <p>为分组添加相应的权限功能</p>
                                 </div>
                             </div>
                         </div>
-                        <div class="code-block">
-                            <div id="tree"></div>
+                        <div class="card card-preview">
+                            <form id="group_sub" action="#" >
+                                <div class="card-inner">
+                                    <div class="form-group">
+                                        <label class="form-label" >分组名称</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control" id="group_title" name="group_title"  placeholder="分组名称">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" >分组权限</label>
+                                        <div class="form-control-wrap">
+                                            <div id="tree"></div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" id="submint" class="btn btn-primary" style="float: right" >提 交</button>
+                                </div>
+                            </form>
+
                         </div>
                         <!-- .code-block -->
                     </div>
@@ -42,6 +59,7 @@
 </style>
 <script src="/demo/src/assets/js/bootstrap-treeview.js"></script>
 <script type="application/javascript">
+    var tree_obj;
     window.onload = function(){
         $.ajax({
             url: '/admin/auth/get_auth_list',
@@ -50,12 +68,12 @@
             success : function(data) {
                 console.log(data);
                 let tree=data.data.tree_list;
-                $('#tree').treeview({
+                tree_obj=$('#tree').treeview({
                     data: tree,
                     showIcon: false,
                     showCheckbox: true,
                     onNodeChecked:nodeChecked ,
-                    onNodeUnchecked:nodeUnchecked
+                    onNodeUnchecked:nodeUnchecked,
                 });
 
 
@@ -127,6 +145,39 @@
                 }
             }
         }
+        //表单提交
+        $("#option_sub").validate({
+            rules:
+                {
+                    option_title:
+                        {
+                            required: true,
+                            maxlength: 15
+                        },
+                },
+            messages:{
+                option_title:
+                    {
+                        required: "分组名称不能为空",
+                        maxlength: "不能大于15位"
+                    },
+            },
+            submitHandler:function (form) {
+                //获取有所选中的节点
+                let checked=$('#tree').treeview('getChecked');
+                $.ajax({
+                    url: "/admin/auth/group_add",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        name:$("#group_title").val(),
+                    },
+                    success: function (data) {
+
+                    }
+                })
+            }
+        });
     }
 </script>
 {/block}

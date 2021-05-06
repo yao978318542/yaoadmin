@@ -116,5 +116,8 @@ class Auth extends AdminBase
     function group_info(){
         return View::fetch();
     }
+    function group_add(){
+
+    }
 
 }

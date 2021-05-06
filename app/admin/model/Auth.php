@@ -83,8 +83,9 @@ class Auth extends Model{
                 if($auth['parent_id']==$parent_id){
                     $data=[
                         "id"=>$auth["id"],
+                        "nodeId"=>$auth["id"],
                         "text"=>$auth["text"],
-                        "state"=>['checked'=>true],
+                        "state"=>['checked'=>true,'expanded'=>true],
                     ];
                     if(!empty($auth['nodes'])){
                         $data['nodes']=$this->auth_tree_option($auth['nodes'],$auth['id']);
