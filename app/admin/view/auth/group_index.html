@@ -1,13 +1,149 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
+{extend name="Public:index" /}
+{block name="main"}
+<div class="nk-content ">
+    <div class="container-fluid">
+        <div class="nk-content-inner">
+            <div class="nk-content-body">
+                <div class="nk-block-head nk-block-head-sm">
+                    <div class="nk-block-between">
+                        <div class="nk-block-head-content">
+                            <h3 class="nk-block-title page-title">分组管理</h3>
+                        </div><!-- .nk-block-head-content -->
+                        <div class="nk-block-head-content">
+                            <div class="toggle-wrap nk-block-tools-toggle">
+                                <a href="#" class="btn btn-icon btn-trigger toggle-expand mr-n1" data-target="pageMenu"><em class="icon ni ni-more-v"></em></a>
+                                <div class="toggle-expand-content" data-content="pageMenu">
+                                    <ul class="nk-block-tools g-3">
+                                        <li>
+                                            <div class="form-control-wrap">
+                                                <div class="form-icon form-icon-right" onclick="list()">
+                                                    <em class="icon ni ni-search"></em>
+                                                </div>
+                                                <input type="text" class="form-control" id="keyword" placeholder="分组名称">
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="drodown">
+                                                <select class="form-select form-control form-control-lg" id="group_type_search" name="group_type_search" onchange="list()">
+                                                    <option value="0">请选择</option>
+                                                    <option value="2">开启</option>
+                                                    <option value="1">关闭</option>
+                                                </select>
+                                            </div>
+                                        </li>
+                                        <li class="nk-block-tools-opt">
+                                            <a href="#" class="btn btn-icon btn-primary d-md-none"><em class="icon ni ni-plus"></em></a>
+                                            <a href="/admin/auth/group_info" class="btn btn-primary d-none d-md-inline-flex"><em class="icon ni ni-plus"></em><span>添加菜单</span></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div><!-- .nk-block-head-content -->
+                    </div><!-- .nk-block-between -->
+                </div><!-- .nk-block-head -->
+                <div class="nk-block">
+                    <table class="nk-tb-list is-separate nk-tb-ulist">
+                        <thead>
+                        <tr class="nk-tb-item nk-tb-head">
+                            <th class="nk-tb-col"><span class="sub-text">分组名称</span></th>
+                            <th class="nk-tb-col tb-col-lg"><span class="sub-text">是否开启</span></th>
+                            <th class="nk-tb-col nk-tb-col-tools text-right">
+                                <span class="sub-text">操作</span>
+                            </th>
+                        </tr><!-- .nk-tb-item -->
+                        </thead>
+                        <tbody id="group_list">
 
-</body>
-</html>
+                        <!-- .nk-tb-item -->
+                        </tbody>
+                    </table><!-- .nk-tb-list -->
+                </div><!-- .nk-block -->
+            </div>
+        </div>
+    </div>
+</div>
+<script type="application/javascript">
+    function list(){
+        $('#group_list').html("");
+        let keyword=$("#keyword").val();
+        let status=$("#group_type_search").val();
+        $.ajax({
+            url: '/admin/auth/group_list',
+            type : "post",
+            data:{"keyword":keyword,"status":status},
+            dataType : "json",
+            success : function(data) {
+                if(data.data.group_list.length){
+                    list_html(data.data.group_list);
+                }
+
+            }
+        });
+    }
+    function list_html(data){
+        for(let i=0;i<data.length;i++){
+            let item=data[i];
+            let status_html='<span class="badge badge-success">开启</span>';
+            if(item.status==0){
+                status_html='<span class="badge badge-danger">关闭</span>';
+            }
+            let html='<tr class="nk-tb-item">\n' +
+                '                            <td class="nk-tb-col">\n' +
+                '                                <a href="html/apps-kanban.html" class="project-title">\n' +
+                '                                    <div class="project-info">\n' +
+                '                                        <h6 class="title">'+item.title+'</h6>\n' +
+                '                                    </div>\n' +
+                '                                </a>\n' +
+                '                            </td>\n' +
+                '                            <td class="nk-tb-col tb-col-lg">\n' +status_html +
+                '                            </td>\n' +
+                '                            <td class="nk-tb-col nk-tb-col-tools">\n' +
+                '                                <ul class="nk-tb-actions gx-1">\n' +
+                '                                    <li>\n' +
+                '                                        <div class="drodown">\n' +
+                '                                            <a href="#" class="dropdown-toggle btn btn-sm btn-icon btn-trigger" data-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>\n' +
+                '                                            <div class="dropdown-menu dropdown-menu-right">\n' +
+                '                                                <ul class="link-list-opt no-bdr">\n' +
+                '                                                    <li><a href="/admin/auth/group_info?id='+item.id+'"><em class="icon ni ni-edit"></em><span>修改</span></a></li>\n' +
+                '                                                    <li onclick="group_del('+item.id+')"><a href=#"><em class="icon ni ni-check-round-cut"></em><span>删除</span></a></li>\n' +
+                '                                                </ul>\n' +
+                '                                            </div>\n' +
+                '                                        </div>\n' +
+                '                                    </li>\n' +
+                '                                </ul>\n' +
+                '                            </td>\n' +
+                '                        </tr>';
+            $('#group_list').append(html);
+        }
+    }
+    //菜单删除
+    function group_del(id){
+        Swal.fire({
+            title: '确定删除吗？',
+            text: "删除后无法还原！",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes'
+        }).then(function (result) {
+            console.log(result);
+            if (result.value) {
+                $.ajax({
+                    url: '/admin/auth/group_del',
+                    type: "post",
+                    data: {"id": id},
+                    dataType: "json",
+                    success: function (data) {
+                        Swal.fire(data.message, '您的权限已被删除', 'success');
+                        list();
+                    }
+                })
+
+            }
+        });
+
+    }
+    window.onload = function(){
+        list();
+    }
+</script>
+{/block}

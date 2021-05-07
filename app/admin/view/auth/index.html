@@ -166,6 +166,11 @@
         }else{
             $("#parent_option").hide();
         }
+        if(value==1||value==2){
+            $("#option_is_show").show();
+        }else{
+            $("#option_is_show").hide();
+        }
     }
     //添加父级菜单
     function parent_opad() {
@@ -236,9 +241,9 @@
                 '                            <td class="nk-tb-col tb-col-xxl">\n' +
                 '                                <span>'+item.name+'</span>\n'+
                 '                            </td>\n' +
-                '                            <td class="nk-tb-col tb-col-lg">\n' +status_html +
+                '                            <td class="nk-tb-col tb-col-lg">\n' +show_html +
                 '                            </td>\n' +
-                '                            <td class="nk-tb-col tb-col-lg">\n' +show_html+
+                '                            <td class="nk-tb-col tb-col-lg">\n' +status_html+
                 '                            </td>\n' +
                 '                            <td class="nk-tb-col tb-col-xxl">\n' +
                 '                                <span>'+item.sort+'</span>\n' +
@@ -389,8 +394,8 @@
                         parent_id: $("#option_parent_id").val(),
                         icon: $("#option_icon_val").val(),
                         name: $("#option_name").val(),
-                        status: $("#option_status").val(),
-                        is_show: $("#option_show").val(),
+                        status: $("#option_status:checked").val(),
+                        is_show: $("#option_show:checked").val(),
                         sort: $("#option_sort").val(),
                     },
                     success : function(data) {

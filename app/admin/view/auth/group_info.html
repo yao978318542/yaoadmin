@@ -21,13 +21,20 @@
                                     <div class="form-group">
                                         <label class="form-label" >分组名称</label>
                                         <div class="form-control-wrap">
-                                            <input type="text" class="form-control" id="group_title" name="group_title"  placeholder="分组名称">
+                                            <input type="text" class="form-control" id="group_title" name="group_title" placeholder="分组名称">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label" >分组权限</label>
                                         <div class="form-control-wrap">
                                             <div id="tree"></div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">是否开启</label>
+                                        <div class="form-control-wrap  custom-switch">
+                                            <input type="checkbox" class="custom-control-input" checked id="group_status"  value="1">
+                                            <label class="custom-control-label"  for="group_status">选择</label>
                                         </div>
                                     </div>
                                     <button type="submit" id="submint" class="btn btn-primary" style="float: right" >提 交</button>
@@ -61,13 +68,31 @@
 <script src="/demo/src/assets/js/bootstrap-treeview.js"></script>
 <script type="application/javascript">
     var tree_obj;
+    var id="<?php echo $id;?>"
     window.onload = function(){
+        if(id){
+            $.ajax({
+                url: '/admin/auth/group_edit',
+                type : "post",
+                dataType : "json",
+                data:{"id":id},
+                success : function(data) {
+                    let info=data.data.info
+                    $("#group_title").val(info.title)
+                    if(info.status){
+                        $("#option_status").prop("checked",true);
+                    }else{
+                        $("#option_status").prop("checked",false);
+                    }
+                }
+            });
+        }
         $.ajax({
             url: '/admin/auth/get_auth_list',
             type : "post",
             dataType : "json",
+            data:{"id":id},
             success : function(data) {
-                console.log(data);
                 let tree=data.data.tree_list;
                 tree_obj=$('#tree').treeview({
                     data: tree,
@@ -166,18 +191,35 @@
             submitHandler:function (form) {
                 //获取有所选中的节点
                 let checked=$('#tree').treeview('getChecked');
+                let rules=[];
                 if(!checked.length){
                     toast('请选择权限','error');return;
+                }else{
+                    for(let i=0;i<checked.length;i++){
+                        rules.push(checked[i].id);
+                    }
                 }
+                load_add("submint");
                 $.ajax({
                     url: "/admin/auth/group_add",
                     type: "post",
                     dataType: "json",
                     data: {
-                        name:$("#group_title").val(),
+                        id:id,
+                        title:$("#group_title").val(),
+                        rules:rules,
+                        status:$("#group_status:checked").val(),
                     },
                     success: function (data) {
+                        load_end("submint");
+                        if(data.status==200){
+                            toast(data.message,'','',function () {
+                                window.location.href="/admin/auth/group_index";
+                            });
 
+                        }else{
+                            toast(data.message,"error");
+                        }
                     }
                 })
             }
