@@ -4,12 +4,15 @@
  * @param type success,error.info,warning
  * @param position http://yaoadmin.com/demo/src/assets/js/example-toastr.js?ver=2.2.0
  */
-function toast(msg,type="success",position) {
+function toast(msg,type="success",position,callback) {
     toastr.clear();
     if(!position){
         position={
             position: "top-center"
         }
+    }
+    if(callback){
+        position.onHidden=callback;
     }
     NioApp.Toast(msg, type, position);
 }

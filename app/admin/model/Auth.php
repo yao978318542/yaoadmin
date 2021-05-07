@@ -10,13 +10,14 @@ class Auth extends Model{
      * @param string $keyword
      * @param int $status 1关闭2 开启 数据库0关闭1开启
      * @param int $retutn_type 返回值类型 1 数据库普通数据
+     * @param int $id 权限组的id
      * @return array|string
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundExceptio
      *
      */
-    function auth_list($type,string $keyword="",int $status=0,int $return_type=0,$data=''){
+    function auth_list($type,string $keyword="",int $status=0,int $return_type=0,$id=''){
         $where=" 1 ";
         $post_status=0;
         if($status>0){
@@ -49,7 +50,12 @@ class Auth extends Model{
         }
         $tree_list=$this->auth_tree($auths,0,0);
         if($type=="obj"){
-            return $this->auth_tree_option($tree_list,0,$data);
+            if($id){
+                $rules=Db::name("auth_group")->where(["id"=>$id])->value("rules");
+                $rules=explode(",",$rules);
+
+            }
+            return $this->auth_tree_option($tree_list,0,$rules);
         }elseif($type=="option"){
             return $this->auth_tree_option_html($tree_list,0);
         }else{
@@ -75,9 +81,10 @@ class Auth extends Model{
         }
         return $tree_list;
     }
-    function auth_tree_option($tree_list,$parent_id,$data=''){
+    function auth_tree_option($tree_list,$parent_id,$rules=''){
         $option_obj=[];
         $level_html="";
+
         if(!empty($tree_list)){
             foreach($tree_list as $key=>$auth){
                 if($auth['parent_id']==$parent_id){
@@ -87,8 +94,15 @@ class Auth extends Model{
                         "text"=>$auth["text"],
                         "state"=>['checked'=>true,'expanded'=>true],
                     ];
+                    if(!empty($rules)){
+                        if(in_array($auth["id"],$rules)){
+                            $data["state"]["checked"]=true;
+                        }else{
+                            $data["state"]["checked"]=false;
+                        }
+                    }
                     if(!empty($auth['nodes'])){
-                        $data['nodes']=$this->auth_tree_option($auth['nodes'],$auth['id']);
+                        $data['nodes']=$this->auth_tree_option($auth['nodes'],$auth['id'],$rules);
                     }
                     $option_obj[]=$data;
                 }
@@ -102,11 +116,12 @@ class Auth extends Model{
         if(!empty($tree_list)){
             foreach($tree_list as $key=>$auth){
                 if($auth['parent_id']==$parent_id){
+                    $level_html="";
                     if($auth['level']>1){
-                        $level_html="|";
                         for($i=0;$i<$auth['level'];$i++){
-                            $level_html.="-";
+                            $level_html.="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
                         }
+                        $level_html.="|-";
                     }
                     $option_html.="<option value ='".$auth["id"]."'>".$level_html.$auth["text"]."</option>";
 
@@ -138,5 +153,16 @@ class Auth extends Model{
         }
         $ids=array_merge($ids,$child_ids);
         return $ids;
+    }
+    function group_list(string $keyword='',int $status=0){
+        $where=" 1 ";
+        if($keyword){
+            $where.=" and title like '%".$keyword."%'";
+        }
+        if($status){
+            $where.=" and status=".$status;
+        }
+        $list=Db::name("auth_group")->where($where)->select()->toArray();
+        return $list;
     }
 }

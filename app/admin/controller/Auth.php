@@ -106,20 +106,75 @@ class Auth extends AdminBase
      * @return \think\response\Json
      */
     function get_auth_list(){
+        $id=input("post.id/d","");
         $type=input("post.type/s","obj");
-        $tree_list=$this->AuthModel->auth_list("obj",'',2);
+        $tree_list=$this->AuthModel->auth_list($type,'',2,0,$id);
         return $this->success("",["tree_list"=>$tree_list]);
     }
     function group_index(){
         return View::fetch();
     }
+
+    /**
+     * 权限分组列表
+     * @return \think\response\Json
+     */
+    function group_list(){
+        $keyword=input("post.keyword/s","");
+        $status=input("post.status/d",0);
+        $group_list=$this->AuthModel->group_list($keyword,$status);
+        return $this->success("",["group_list"=>$group_list]);
+    }
+
+    /**
+     * 分组添加页面
+     * @return string
+     */
     function group_info(){
+        $id=input("id/d","");
+        View::assign("id",$id);
         return View::fetch();
     }
+
+    /**
+     * 分组详情查询
+     * @return \think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    function group_edit(){
+        $id=input("post.id/d","");
+        $info=Db::name("auth_group")->where(["id"=>$id])->find();
+        return $this->success("",["info"=>$info]);
+    }
+
+    /**
+     * 分组添加
+     * @return \think\response\Json
+     */
     function group_add(){
         $id=input("post.id/d","");
         $title=input("post.title/s","");
-        $title=input("post.rules/s","");
+        $status=input("post.status/s","");
+        $rules=input("post.rules/a","");
+        if($id){
+            Db::name("auth_group")->where(["id"=>$id])->save(["title"=>$title,"status"=>$status,"rules"=>implode(",",$rules)]);
+        }else{
+            Db::name("auth_group")->insertGetId(["title"=>$title,"status"=>$status,"rules"=>implode(",",$rules)]);
+        }
+        return $this->success('操作成功');
+    }
+
+    /**
+     * 权限组删除
+     * @return \think\response\Json
+     * @throws \think\db\exception\DbException
+     */
+    function group_del(){
+        $id=input("post.id/d","");
+        $re=Db::name("auth_group")->where(["id"=>$id])->delete();
+        return $this->success('操作成功');
     }
 
 }
