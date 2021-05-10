@@ -11,6 +11,7 @@ use app\BaseController;
 use think\exception\HttpResponseException;
 use think\facade\View;
 use think\wenhainan\Auth;
+use app\admin\model\Auth as MemberAuth;
 
 class AdminBase extends BaseController
 {
@@ -31,7 +32,15 @@ class AdminBase extends BaseController
             abort(501, '没有访问权限');
         }
         //查找菜单
-
+        $menu=session('menu');
+        if(empty($menu)){
+            $model=new MemberAuth();
+            $menu=$model->get_menu();
+            if(!empty($menu)){
+                session('menu',$menu);
+            }
+        }
+        View::assign('menu',$menu);
     }
     /**
      * 验证数据

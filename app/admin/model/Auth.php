@@ -54,6 +54,8 @@ class Auth extends Model{
                 $rules=Db::name("auth_group")->where(["id"=>$id])->value("rules");
                 $rules=explode(",",$rules);
 
+            }else{
+                $rules='';
             }
             return $this->auth_tree_option($tree_list,0,$rules);
         }elseif($type=="option"){
@@ -62,6 +64,13 @@ class Auth extends Model{
             return $tree_list;
         }
     }
+    /**
+     * 权限树
+     * @param $auths
+     * @param $parent_id
+     * @param $level
+     * @return array
+     */
     function auth_tree($auths,$parent_id,$level){
         $tree_list=[];
         $level++;
@@ -160,9 +169,54 @@ class Auth extends Model{
             $where.=" and title like '%".$keyword."%'";
         }
         if($status){
-            $where.=" and status=".$status;
+            $where.=" and status=".($status-1);
         }
         $list=Db::name("auth_group")->where($where)->select()->toArray();
         return $list;
     }
+
+    function get_menu(){
+        $rules=Db::name("user")
+            ->alias("a")
+            ->leftJoin("auth_group_access b","a.id=b.uid")
+            ->leftJoin("auth_group c","b.group_id=c.id")
+            ->where("a.id=".session('uid'))
+            ->value("c.rules");
+        $auths=Db::name("auth_rule")
+            ->whereIn("id",$rules)
+            ->where("type<3")->select()->toArray();
+        return $this->auth_menu($auths,0);
+    }
+    /**
+     * 菜单用
+     * @param $auths
+     * @param $parent_id
+     * @param $level
+     * @return array
+     */
+    function auth_menu($auths,$parent_id){
+        $tree_list=[];
+        if(!empty($auths)){
+            foreach($auths as $key=>$auth){
+                if($auth['type']>2){continue;}
+                if($auth['parent_id']==$parent_id){
+                    if($parent_id==0){
+                        $url="#";
+                    }else{
+                        $url="/".str_replace("-","/",$auth['name']);
+                    }
+                    $tree_list[]= [
+                        "id"=>$auth["id"],
+                        "title"=>$auth["title"],
+                        "parent_id"=>$auth["parent_id"],
+                        "icon"=>$auth["icon"],
+                        "url"=>$url,
+                        "nodes"=>$this->auth_menu($auths,$auth['id']),
+                    ];
+                }
+            }
+        }
+        return $tree_list;
+    }
+
 }

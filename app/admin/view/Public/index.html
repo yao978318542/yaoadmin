@@ -55,20 +55,25 @@
 <!--                                <h6 class="overline-title text-primary-alt">Dashboards</h6>-->
 <!--                            </li>-->
                             <!-- .nk-menu-item -->
+                            {if !empty($menu)}
+                            {foreach $menu as $item}
                             <li class="nk-menu-item has-sub">
-                                <a href="#" class="nk-menu-link nk-menu-toggle">
-                                    <span class="nk-menu-icon"><em class="icon ni ni-tile-thumb-fill"></em></span>
-                                    <span class="nk-menu-text">Projects</span>
+                                <a href="{$item['url']}" class="nk-menu-link nk-menu-toggle">
+                                    <span class="nk-menu-icon"><em class="icon ni ni-{$item['icon']}"></em></span>
+                                    <span class="nk-menu-text">{$item['title']}</span>
                                 </a>
+                                {if !empty($item['nodes'])}
                                 <ul class="nk-menu-sub">
+                                    {foreach $item['nodes'] as $node}
                                     <li class="nk-menu-item has-sub">
-                                        <a href="html/project-card.html" class="nk-menu-link"><span class="nk-menu-text">Project Cards</span></a>
+                                        <a href="{$node['url']}" class="nk-menu-link"><span class="nk-menu-text">{$node['title']}</span></a>
                                     </li>
-                                    <li class="nk-menu-item">
-                                        <a href="html/project-list.html" class="nk-menu-link"><span class="nk-menu-text">Project List</span></a>
-                                    </li>
+                                    {/foreach}
                                 </ul><!-- .nk-menu-sub -->
+                                {/if}
                             </li><!-- .nk-menu-item -->
+                            {/foreach}
+                            {/if}
                         </ul><!-- .nk-menu -->
                     </div><!-- .nk-sidebar-menu -->
                 </div><!-- .nk-sidebar-content -->
