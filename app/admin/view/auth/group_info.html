@@ -84,6 +84,9 @@
                     }else{
                         $("#option_status").prop("checked",false);
                     }
+                },
+                error:function () {
+                    toast("访问出错","error");
                 }
             });
         }
@@ -220,6 +223,11 @@
                         }else{
                             toast(data.message,"error");
                         }
+                    },
+                    error:function () {
+                        toast("访问出错","error","",function () {
+                            load_end("submint");
+                        });
                     }
                 })
             }

@@ -160,6 +160,11 @@ class Auth extends AdminBase
         $rules=input("post.rules/a","");
         if($id){
             Db::name("auth_group")->where(["id"=>$id])->save(["title"=>$title,"status"=>$status,"rules"=>implode(",",$rules)]);
+            //如果修改的是当前分组的话刷新菜单
+            $user_info=session("user_info");
+            if($user_info["group_id"]==$id){
+                session('menu',null);
+            }
         }else{
             Db::name("auth_group")->insertGetId(["title"=>$title,"status"=>$status,"rules"=>implode(",",$rules)]);
         }
