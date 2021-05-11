@@ -219,4 +219,10 @@ class Auth extends Model{
         return $tree_list;
     }
 
+    /*
+     * 当前可用权限组
+     */
+    function auth_group(string $filed="*"){
+        return Db::name("auth_group")->where(["status"=>1])->field($filed)->select()->toArray();
+    }
 }

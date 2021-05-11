@@ -12,6 +12,7 @@ namespace app\admin\controller;
 use app\admin\AdminBase;
 use think\facade\View;
 use  app\admin\model\User as UserModel;
+use app\admin\model\Auth;
 
 class User extends AdminBase
 {
@@ -27,4 +28,12 @@ class User extends AdminBase
         return View::fetch();
     }
 
+    /**
+     * 获取权限组
+     */
+    function auth_group(){
+        $auth=new Auth();
+        $data=$auth->auth_group("id,title");
+        return $this->success("",["data"=>$data]);
+    }
 }

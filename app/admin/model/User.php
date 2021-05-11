@@ -14,7 +14,7 @@ use think\facade\Db;
 class User extends Model{
     protected $table = "auth_rule";
 
-    function user_list(string $keyword,int $status=2){
+    function user_list(string $keyword='',int $status=2){
         $where=' status ='.$status;
         if($keyword){
             $where.="name like '%".$keyword."%'";

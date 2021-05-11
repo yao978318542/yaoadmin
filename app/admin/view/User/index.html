@@ -37,9 +37,9 @@
                                                 </div>
                                             </div>
                                         </li>
-                                        <li class="nk-block-tools-opt">
+                                        <li class="nk-block-tools-opt" data-toggle="modal" data-target="#add_user">
                                             <a href="#" class="btn btn-icon btn-primary d-md-none"><em class="icon ni ni-plus"></em></a>
-                                            <a href="#" class="btn btn-primary d-none d-md-inline-flex"><em class="icon ni ni-plus"></em><span>Add</span></a>
+                                            <a href="#" class="btn btn-primary d-none d-md-inline-flex"><em class="icon ni ni-plus"></em><span>添加管理员</span></a>
                                         </li>
                                     </ul>
                                 </div>
@@ -721,46 +721,6 @@
                         <div class="card-inner">
                             <div class="nk-block-between-md g-3">
                                 {$page|raw}
-<!--                                <div class="g">-->
-<!--                                    <ul class="pagination justify-content-center justify-content-md-start">-->
-<!--                                        <li class="page-item"><a class="page-link" href="#">Prev</a></li>-->
-<!--                                        <li class="page-item"><a class="page-link" href="#">1</a></li>-->
-<!--                                        <li class="page-item"><a class="page-link" href="#">2</a></li>-->
-<!--                                        <li class="page-item"><span class="page-link"><em class="icon ni ni-more-h"></em></span></li>-->
-<!--                                        <li class="page-item"><a class="page-link" href="#">6</a></li>-->
-<!--                                        <li class="page-item"><a class="page-link" href="#">7</a></li>-->
-<!--                                        <li class="page-item"><a class="page-link" href="#">Next</a></li>-->
-<!--                                    </ul>&lt;!&ndash; .pagination &ndash;&gt;-->
-<!--                                </div>-->
-<!--                                <div class="g">-->
-<!--                                    <div class="pagination-goto d-flex justify-content-center justify-content-md-start gx-3">-->
-<!--                                        <div>Page</div>-->
-<!--                                        <div>-->
-<!--                                            <select class="form-select form-select-sm" data-search="on" data-dropdown="xs center">-->
-<!--                                                <option value="page-1">1</option>-->
-<!--                                                <option value="page-2">2</option>-->
-<!--                                                <option value="page-4">4</option>-->
-<!--                                                <option value="page-5">5</option>-->
-<!--                                                <option value="page-6">6</option>-->
-<!--                                                <option value="page-7">7</option>-->
-<!--                                                <option value="page-8">8</option>-->
-<!--                                                <option value="page-9">9</option>-->
-<!--                                                <option value="page-10">10</option>-->
-<!--                                                <option value="page-11">11</option>-->
-<!--                                                <option value="page-12">12</option>-->
-<!--                                                <option value="page-13">13</option>-->
-<!--                                                <option value="page-14">14</option>-->
-<!--                                                <option value="page-15">15</option>-->
-<!--                                                <option value="page-16">16</option>-->
-<!--                                                <option value="page-17">17</option>-->
-<!--                                                <option value="page-18">18</option>-->
-<!--                                                <option value="page-19">19</option>-->
-<!--                                                <option value="page-20">20</option>-->
-<!--                                            </select>-->
-<!--                                        </div>-->
-<!--                                        <div>OF 102</div>-->
-<!--                                    </div>-->
-<!--                                </div>&lt;!&ndash; .pagination-goto &ndash;&gt;-->
                             </div><!-- .nk-block-between -->
                         </div><!-- .card-inner -->
                     </div><!-- .card -->
@@ -769,4 +729,200 @@
         </div>
     </div>
 </div>
+<!--添加页面-->
+<div class="modal fade" tabindex="-1" id="add_user">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">管理员详情</h6>
+                <a href="#" class="close" data-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
+            </div>
+            <div class="modal-body p-0">
+                <div class="nk-reply-form-header">
+                    <div class="nk-reply-form-group">
+                        <div class="nk-reply-form-input-group">
+                            <form id="user_sub" action="#" >
+                                <div>
+                                    <div class="form-group">
+                                        <label class="form-label" >管理员名称</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control" id="user_name" name="user_name"  placeholder="管理员名称">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" >管理员密码</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control" id="user_password" name="user_password"  placeholder="管理员密码">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" >确认密码</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control" id="user_password2" name="user_password2"  placeholder="管理员密码">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" >管理员手机号</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control" id="user_phone" name="user_phone"  placeholder="管理员手机号">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">权限分组</label>
+                                        <div class="form-control-wrap">
+                                            <select class="form-select form-control form-control-lg" id="user_group" name="user_group">
+                                                <option value="0">请选择</option>
+                                                <option value="1">主菜单</option>
+                                                <option value="2">子菜单</option>
+                                                <option value="3">功能</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">管理员头像</label>
+                                        <div id="avatar_div" class="rounded-circle avatar" style="height: 150px">
+                                            <span class="nk-menu-icon"><em class="icon ni ni-plus"></em></span>
+                                        </div>
+                                        <input type="file" multiple="" class="custom-file-input" id="avatar" name="avatar" style="display: none">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">是否开启</label>
+                                        <div class="form-control-wrap  custom-switch">
+                                            <input type="checkbox" class="custom-control-input" checked id="option_status"  value="1">
+                                            <label class="custom-control-label"  for="option_status">开启</label>
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" id="submint" class="btn btn-primary" style="float: right">提 交</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .avatar{
+        height: 150px;
+        border: 1px dashed #d9d9d9;
+        width: 150px;
+        text-align:center;
+        line-height: 150px;
+        cursor:pointer
+    }
+</style>
+<script src="/demo/src/assets/js/public.js"></script>
+<script type="application/javascript">
+    window.onload=function () {
+        $("#avatar_div").click(function(){
+            $("#avatar").trigger("click");
+        });
+        $.ajax({
+            url: '/admin/user/auth_group',
+            type : "post",
+            dataType : "json",
+            success : function(data) {
+                let list=data.data.data;
+                if(list.length){
+                    let html="";
+                    for(let i=0;i<list.length;i++){
+                        let item=list[i];
+                        html+="<option value ='"+item.id+"'>"+item.title+"</option>";
+                    }
+                    $("#user_group").html(html);
+                    $("#user_group").trigger('change');//重新渲染
+                }
+            }
+        });
+        $("#user_sub").validate({
+            rules:
+                {
+                    user_name:
+                        {
+                            required: true,
+                            maxlength: 15
+                        },
+                    user_password:
+                        {
+                            required: true,
+                            minlength: 6,
+                            maxlength: 15,
+                        },
+                    user_password2:
+                        {
+                            equalTo: "#user_password"
+                        },
+                    user_phone:
+                        {
+                            required: true,
+                            verify_phone: true,
+                        },
+                },
+            messages:
+                {
+                    user_name:
+                        {
+                            required: "用户名称不能为空",
+                            maxlength: "不能大于15位"
+                        },
+                    user_password:
+                        {
+                            required: "请填写密码",
+                            minlength: "密码不能少于6位",
+                            maxlength: "密码不能多于15位",
+                        },
+                    user_password2:
+                        {
+                            equalTo: "两次密码输入不一致",
+                        },
+                    user_phone:
+                        {
+                            required: "请填写管理员手机号",
+                            verify_phone: "请填写正确的手机号",
+                        },
+                },
+            submitHandler:function (form) {
+                load_add("submint");
+                console.log("验证通过");
+                return ;
+                $.ajax({
+                    url : "/admin/auth/add",
+                    type : "post",
+                    dataType : "json",
+                    data: {
+                        id:exit_id,
+                        title:$("#option_title").val(),
+                        type: $("#option_type").val(),
+                        parent_id: $("#option_parent_id").val(),
+                        icon: $("#option_icon_val").val(),
+                        name: $("#option_name").val(),
+                        status: $("#option_status:checked").val(),
+                        is_show: $("#option_show:checked").val(),
+                        sort: $("#option_sort").val(),
+                    },
+                    success : function(data) {
+                        load_end("submint");
+                        if(data.status==200){
+                            toast(data.message);
+                            $('#compose-mail').modal('hide')
+                            list();
+                            parent_opad();
+                        }else{
+                            toast(data.message,"error");
+                        }
+                    },
+                    error:function (XMLHttpRequest, textStatus, errorThrown) {
+                        toast("访问出错","error","",function () {
+                            load_end("submint");
+                        });
+                    }
+                });
+            }
+
+        });
+    }
+</script>
 {/block}
