@@ -78,6 +78,11 @@ class Auth extends AdminBase
             if(!$id){
                 $id=Db::name("auth_rule")->insertGetId($save_data);
                 $res=true;
+                //给全部分组直接添加
+                $rules=Db::name("auth_group")->where(["id"=>1])->value("rules");
+                if($rules){
+                    Db::name("auth_group")->where(["id"=>1])->update(["rules"=>$rules.",".$id]);
+                }
             }else{
                 $res=Db::name("auth_rule")->where(["id"=>$id])->update($save_data);
             }

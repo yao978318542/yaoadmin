@@ -9,7 +9,7 @@
                         <div class="nk-block-head-content">
                             <h3 class="nk-block-title page-title">管理员列表</h3>
                             <div class="nk-block-des text-soft">
-                                <p>你现在拥有个管理员.</p>
+                                <p>你现在拥有{$count}个管理员.</p>
                             </div>
                         </div><!-- .nk-block-head-content -->
                         <div class="nk-block-head-content">
@@ -19,22 +19,19 @@
                                     <ul class="nk-block-tools g-3">
                                         <li>
                                             <div class="form-control-wrap">
-                                                <div class="form-icon form-icon-right">
+                                                <div class="form-icon form-icon-right" onclick="list_change()">
                                                     <em class="icon ni ni-search"></em>
                                                 </div>
-                                                <input type="text" class="form-control" id="default-04" placeholder="Search by name">
+                                                <input type="text" class="form-control" id="keyword" placeholder="管理员名称">
                                             </div>
                                         </li>
                                         <li>
                                             <div class="drodown">
-                                                <a href="#" class="dropdown-toggle dropdown-indicator btn btn-outline-light btn-white" data-toggle="dropdown">Status</a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <ul class="link-list-opt no-bdr">
-                                                        <li><a href="#"><span>Actived</span></a></li>
-                                                        <li><a href="#"><span>Inactived</span></a></li>
-                                                        <li><a href="#"><span>Blocked</span></a></li>
-                                                    </ul>
-                                                </div>
+                                                <select class="form-select form-control form-control-lg" id="list_search" name="list_search" onchange="list_change()">
+                                                    <option value="0">请选择</option>
+                                                    <option value="2" {if $status==2}selected{/if}>开启</option>
+                                                    <option value="1" {if $status==1}selected{/if}>关闭</option>
+                                                </select>
                                             </div>
                                         </li>
                                         <li class="nk-block-tools-opt" data-toggle="modal" data-target="#add_user">
@@ -50,17 +47,8 @@
                 <div class="nk-block">
                     <div class="nk-tb-list is-separate mb-3">
                         <div class="nk-tb-item nk-tb-head">
-                            <div class="nk-tb-col nk-tb-col-check">
-                                <div class="custom-control custom-control-sm custom-checkbox notext">
-                                    <input type="checkbox" class="custom-control-input" id="uid">
-                                    <label class="custom-control-label" for="uid"></label>
-                                </div>
-                            </div>
                             <div class="nk-tb-col"><span class="sub-text">用户</span></div>
-                            <div class="nk-tb-col tb-col-mb"><span class="sub-text">Ordered</span></div>
                             <div class="nk-tb-col tb-col-md"><span class="sub-text">电话</span></div>
-                            <div class="nk-tb-col tb-col-lg"><span class="sub-text">Country</span></div>
-                            <div class="nk-tb-col tb-col-lg"><span class="sub-text">Last Order</span></div>
                             <div class="nk-tb-col tb-col-md"><span class="sub-text">状态</span></div>
                             <div class="nk-tb-col nk-tb-col-tools">
                                 <ul class="nk-tb-actions gx-1 my-n1">
@@ -80,40 +68,36 @@
                                 </ul>
                             </div>
                         </div><!-- .nk-tb-item -->
+                        {if !empty($list)}
+                        {foreach $list as $item}
                         <div class="nk-tb-item">
-                            <div class="nk-tb-col nk-tb-col-check">
-                                <div class="custom-control custom-control-sm custom-checkbox notext">
-                                    <input type="checkbox" class="custom-control-input" id="uid1">
-                                    <label class="custom-control-label" for="uid1"></label>
-                                </div>
-                            </div>
                             <div class="nk-tb-col">
-                                <a href="html/ecommerce/customer-details.html">
+                                <a href="">
                                     <div class="user-card">
+
                                         <div class="user-avatar bg-primary">
-                                            <span>AB</span>
+                                            {if !$item['avatar']}
+                                                <span><?php echo mb_substr( $item['name'], 0, 1 );?></span>
+                                            {else/}
+                                                <img src="{$item['avatar']}"/>
+                                            {/if}
                                         </div>
+
                                         <div class="user-info">
-                                            <span class="tb-lead">Abu Bin Ishtiyak <span class="dot dot-success d-md-none ml-1"></span></span>
-                                            <span>info@softnio.com</span>
+                                            <span class="tb-lead">{$item['name']}<span class="dot dot-success d-md-none ml-1"></span></span>
                                         </div>
                                     </div>
                                 </a>
                             </div>
-                            <div class="nk-tb-col tb-col-mb">
-                                <span class="tb-amount">35,040.34 <span class="currency">USD</span></span>
+                            <div class="nk-tb-col tb-col-md">
+                                <span>{$item['phone']}</span>
                             </div>
                             <div class="nk-tb-col tb-col-md">
-                                <span>+811 847-4958</span>
-                            </div>
-                            <div class="nk-tb-col tb-col-lg">
-                                <span>United State</span>
-                            </div>
-                            <div class="nk-tb-col tb-col-lg">
-                                <span>10 Feb 2020</span>
-                            </div>
-                            <div class="nk-tb-col tb-col-md">
-                                <span class="tb-status text-success">Active</span>
+                                {if $item['status']==2}
+                                    <span class="badge badge-success">开启</span>
+                                {else/}
+                                    <span class="badge badge-danger">关闭</span>
+                                {/if}
                             </div>
                             <div class="nk-tb-col nk-tb-col-tools">
                                 <ul class="nk-tb-actions gx-1">
@@ -132,12 +116,18 @@
                                             <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
                                             <div class="dropdown-menu dropdown-menu-right">
                                                 <ul class="link-list-opt no-bdr">
-                                                    <li><a href="html/ecommerce/customer-details.html"><em class="icon ni ni-eye"></em><span>View Details</span></a></li>
-                                                    <li><a href="#"><em class="icon ni ni-repeat"></em><span>Orders</span></a></li>
-                                                    <li><a href="#"><em class="icon ni ni-activity-round"></em><span>Activities</span></a></li>
-                                                    <li class="divider"></li>
-                                                    <li><a href="#"><em class="icon ni ni-shield-star"></em><span>Reset Pass</span></a></li>
-                                                    <li><a href="#"><em class="icon ni ni-na"></em><span>Suspend</span></a></li>
+                                                    <li onclick="user_info({$item['id']})"><a href="#"><em class="icon ni ni-eye"></em><span>修改</span></a></li>
+
+                                                    <li onclick="user_disable({$item['id']})"><a href="#"><em class="icon ni ni-repeat"></em><span>
+                                                      {if $item['status']==2}
+                                                        禁用
+                                                      {else/}
+                                                        启用
+                                                      {/if}
+
+                                                    </span></a></li>
+
+                                                    <li onclick="user_del({$item['id']})"><a href="#"><em class="icon ni ni-activity-round"></em><span>删除</span></a></li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -145,577 +135,9 @@
                                 </ul>
                             </div>
                         </div><!-- .nk-tb-item -->
-                        <div class="nk-tb-item">
-                            <div class="nk-tb-col nk-tb-col-check">
-                                <div class="custom-control custom-control-sm custom-checkbox notext">
-                                    <input type="checkbox" class="custom-control-input" id="uid2">
-                                    <label class="custom-control-label" for="uid2"></label>
-                                </div>
-                            </div>
-                            <div class="nk-tb-col">
-                                <a href="html/ecommerce/customer-details.html">
-                                    <div class="user-card">
-                                        <div class="user-avatar">
-                                            <img src="./images/avatar/a-sm.jpg" alt="">
-                                        </div>
-                                        <div class="user-info">
-                                            <span class="tb-lead">Ashley Lawson <span class="dot dot-warning d-md-none ml-1"></span></span>
-                                            <span>ashley@softnio.com</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="nk-tb-col tb-col-mb">
-                                <span class="tb-amount">580.00 <span class="currency">USD</span></span>
-                            </div>
-                            <div class="nk-tb-col tb-col-md">
-                                <span>+124 394-1787</span>
-                            </div>
-                            <div class="nk-tb-col tb-col-lg">
-                                <span>United Kindom</span>
-                            </div>
-                            <div class="nk-tb-col tb-col-lg">
-                                <span>07 Feb 2020</span>
-                            </div>
-                            <div class="nk-tb-col tb-col-md">
-                                <span class="tb-status text-warning">Pending</span>
-                            </div>
-                            <div class="nk-tb-col nk-tb-col-tools">
-                                <ul class="nk-tb-actions gx-1">
-                                    <li class="nk-tb-action-hidden">
-                                        <a href="#" class="btn btn-trigger btn-icon" data-toggle="tooltip" data-placement="top" title="Send Email">
-                                            <em class="icon ni ni-mail-fill"></em>
-                                        </a>
-                                    </li>
-                                    <li class="nk-tb-action-hidden">
-                                        <a href="#" class="btn btn-trigger btn-icon" data-toggle="tooltip" data-placement="top" title="Suspend">
-                                            <em class="icon ni ni-user-cross-fill"></em>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <div class="drodown">
-                                            <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <ul class="link-list-opt no-bdr">
-                                                    <li><a href="html/ecommerce/customer-details.html"><em class="icon ni ni-eye"></em><span>View Details</span></a></li>
-                                                    <li><a href="#"><em class="icon ni ni-repeat"></em><span>Orders</span></a></li>
-                                                    <li><a href="#"><em class="icon ni ni-activity-round"></em><span>Activities</span></a></li>
-                                                    <li class="divider"></li>
-                                                    <li><a href="#"><em class="icon ni ni-shield-star"></em><span>Reset Pass</span></a></li>
-                                                    <li><a href="#"><em class="icon ni ni-na"></em><span>Suspend</span></a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div><!-- .nk-tb-item -->
-                        <div class="nk-tb-item">
-                            <div class="nk-tb-col nk-tb-col-check">
-                                <div class="custom-control custom-control-sm custom-checkbox notext">
-                                    <input type="checkbox" class="custom-control-input" id="uid3">
-                                    <label class="custom-control-label" for="uid3"></label>
-                                </div>
-                            </div>
-                            <div class="nk-tb-col">
-                                <a href="html/ecommerce/customer-details.html">
-                                    <div class="user-card">
-                                        <div class="user-avatar bg-info">
-                                            <span>JL</span>
-                                        </div>
-                                        <div class="user-info">
-                                            <span class="tb-lead">Joe Larson <span class="dot dot-success d-md-none ml-1"></span></span>
-                                            <span>larson@example.com</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="nk-tb-col tb-col-mb">
-                                <span class="tb-amount">32,000.34 <span class="currency">USD</span></span>
-                            </div>
-                            <div class="nk-tb-col tb-col-md">
-                                <span>+168 603-2320</span>
-                            </div>
-                            <div class="nk-tb-col tb-col-lg">
-                                <span>India</span>
-                            </div>
-                            <div class="nk-tb-col tb-col-lg">
-                                <span>04 Feb 2020</span>
-                            </div>
-                            <div class="nk-tb-col tb-col-md">
-                                <span class="tb-status text-success">Active</span>
-                            </div>
-                            <div class="nk-tb-col nk-tb-col-tools">
-                                <ul class="nk-tb-actions gx-1">
-                                    <li class="nk-tb-action-hidden">
-                                        <a href="#" class="btn btn-trigger btn-icon" data-toggle="tooltip" data-placement="top" title="Send Email">
-                                            <em class="icon ni ni-mail-fill"></em>
-                                        </a>
-                                    </li>
-                                    <li class="nk-tb-action-hidden">
-                                        <a href="#" class="btn btn-trigger btn-icon" data-toggle="tooltip" data-placement="top" title="Suspend">
-                                            <em class="icon ni ni-user-cross-fill"></em>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <div class="drodown">
-                                            <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <ul class="link-list-opt no-bdr">
-                                                    <li><a href="html/ecommerce/customer-details.html"><em class="icon ni ni-eye"></em><span>View Details</span></a></li>
-                                                    <li><a href="#"><em class="icon ni ni-repeat"></em><span>Orders</span></a></li>
-                                                    <li><a href="#"><em class="icon ni ni-activity-round"></em><span>Activities</span></a></li>
-                                                    <li class="divider"></li>
-                                                    <li><a href="#"><em class="icon ni ni-shield-star"></em><span>Reset Pass</span></a></li>
-                                                    <li><a href="#"><em class="icon ni ni-na"></em><span>Suspend</span></a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div><!-- .nk-tb-item -->
-                        <div class="nk-tb-item">
-                            <div class="nk-tb-col nk-tb-col-check">
-                                <div class="custom-control custom-control-sm custom-checkbox notext">
-                                    <input type="checkbox" class="custom-control-input" id="uid4">
-                                    <label class="custom-control-label" for="uid4"></label>
-                                </div>
-                            </div>
-                            <div class="nk-tb-col">
-                                <div class="user-card">
-                                    <div class="user-avatar bg-danger">
-                                        <span>JM</span>
-                                    </div>
-                                    <div class="user-info">
-                                        <span class="tb-lead">Jane Montgomery <span class="dot dot-danger d-md-none ml-1"></span></span>
-                                        <span>jane84@example.com</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="nk-tb-col tb-col-mb">
-                                <span class="tb-amount">0.00 <span class="currency">USD</span></span>
-                            </div>
-                            <div class="nk-tb-col tb-col-md">
-                                <span>+439 271-5360</span>
-                            </div>
-                            <div class="nk-tb-col tb-col-lg">
-                                <span>Canada</span>
-                            </div>
-                            <div class="nk-tb-col tb-col-lg">
-                                <span>01 Feb 2020</span>
-                            </div>
-                            <div class="nk-tb-col tb-col-md">
-                                <span class="tb-status text-danger">Suspend</span>
-                            </div>
-                            <div class="nk-tb-col nk-tb-col-tools">
-                                <ul class="nk-tb-actions gx-1">
-                                    <li class="nk-tb-action-hidden">
-                                        <a href="#" class="btn btn-trigger btn-icon" data-toggle="tooltip" data-placement="top" title="Send Email">
-                                            <em class="icon ni ni-mail-fill"></em>
-                                        </a>
-                                    </li>
-                                    <li class="nk-tb-action-hidden">
-                                        <a href="#" class="btn btn-trigger btn-icon" data-toggle="tooltip" data-placement="top" title="Suspend">
-                                            <em class="icon ni ni-user-cross-fill"></em>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <div class="drodown">
-                                            <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <ul class="link-list-opt no-bdr">
-                                                    <li><a href="html/ecommerce/customer-details.html"><em class="icon ni ni-eye"></em><span>View Details</span></a></li>
-                                                    <li><a href="#"><em class="icon ni ni-repeat"></em><span>Orders</span></a></li>
-                                                    <li><a href="#"><em class="icon ni ni-activity-round"></em><span>Activities</span></a></li>
-                                                    <li class="divider"></li>
-                                                    <li><a href="#"><em class="icon ni ni-shield-star"></em><span>Reset Pass</span></a></li>
-                                                    <li><a href="#"><em class="icon ni ni-na"></em><span>Suspend</span></a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div><!-- .nk-tb-item -->
-                        <div class="nk-tb-item">
-                            <div class="nk-tb-col nk-tb-col-check">
-                                <div class="custom-control custom-control-sm custom-checkbox notext">
-                                    <input type="checkbox" class="custom-control-input" id="uid5">
-                                    <label class="custom-control-label" for="uid5"></label>
-                                </div>
-                            </div>
-                            <div class="nk-tb-col">
-                                <div class="user-card">
-                                    <div class="user-avatar">
-                                        <img src="./images/avatar/b-sm.jpg" alt="">
-                                    </div>
-                                    <div class="user-info">
-                                        <span class="tb-lead">Frances Burns <span class="dot dot-success d-md-none ml-1"></span></span>
-                                        <span>frances@example.com</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="nk-tb-col tb-col-mb">
-                                <span class="tb-amount">42.50 <span class="currency">USD</span></span>
-                            </div>
-                            <div class="nk-tb-col tb-col-md">
-                                <span>+639 130-3150</span>
-                            </div>
-                            <div class="nk-tb-col tb-col-lg">
-                                <span>Australia</span>
-                            </div>
-                            <div class="nk-tb-col tb-col-lg">
-                                <span>31 Jan 2020</span>
-                            </div>
-                            <div class="nk-tb-col tb-col-md">
-                                <span class="tb-status text-success">Active</span>
-                            </div>
-                            <div class="nk-tb-col nk-tb-col-tools">
-                                <ul class="nk-tb-actions gx-1">
-                                    <li class="nk-tb-action-hidden">
-                                        <a href="#" class="btn btn-trigger btn-icon" data-toggle="tooltip" data-placement="top" title="Send Email">
-                                            <em class="icon ni ni-mail-fill"></em>
-                                        </a>
-                                    </li>
-                                    <li class="nk-tb-action-hidden">
-                                        <a href="#" class="btn btn-trigger btn-icon" data-toggle="tooltip" data-placement="top" title="Suspend">
-                                            <em class="icon ni ni-user-cross-fill"></em>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <div class="drodown">
-                                            <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <ul class="link-list-opt no-bdr">
-                                                    <li><a href="html/ecommerce/customer-details.html"><em class="icon ni ni-eye"></em><span>View Details</span></a></li>
-                                                    <li><a href="#"><em class="icon ni ni-repeat"></em><span>Orders</span></a></li>
-                                                    <li><a href="#"><em class="icon ni ni-activity-round"></em><span>Activities</span></a></li>
-                                                    <li class="divider"></li>
-                                                    <li><a href="#"><em class="icon ni ni-shield-star"></em><span>Reset Pass</span></a></li>
-                                                    <li><a href="#"><em class="icon ni ni-na"></em><span>Suspend</span></a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div><!-- .nk-tb-item -->
-                        <div class="nk-tb-item">
-                            <div class="nk-tb-col nk-tb-col-check">
-                                <div class="custom-control custom-control-sm custom-checkbox notext">
-                                    <input type="checkbox" class="custom-control-input" id="uid6">
-                                    <label class="custom-control-label" for="uid6"></label>
-                                </div>
-                            </div>
-                            <div class="nk-tb-col">
-                                <div class="user-card">
-                                    <div class="user-avatar">
-                                        <img src="./images/avatar/c-sm.jpg" alt="">
-                                    </div>
-                                    <div class="user-info">
-                                        <span class="tb-lead">Alan Butler <span class="dot dot-info d-md-none ml-1"></span></span>
-                                        <span>butler@example.com</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="nk-tb-col tb-col-mb">
-                                <span class="tb-amount">440.34 <span class="currency">USD</span></span>
-                            </div>
-                            <div class="nk-tb-col tb-col-md">
-                                <span>+963 309-1706</span>
-                            </div>
-                            <div class="nk-tb-col tb-col-lg">
-                                <span>United State</span>
-                            </div>
-                            <div class="nk-tb-col tb-col-lg">
-                                <span>18 Jan 2020</span>
-                            </div>
-                            <div class="nk-tb-col tb-col-md">
-                                <span class="tb-status text-info">Inactive</span>
-                            </div>
-                            <div class="nk-tb-col nk-tb-col-tools">
-                                <ul class="nk-tb-actions gx-1">
-                                    <li class="nk-tb-action-hidden">
-                                        <a href="#" class="btn btn-trigger btn-icon" data-toggle="tooltip" data-placement="top" title="Send Email">
-                                            <em class="icon ni ni-mail-fill"></em>
-                                        </a>
-                                    </li>
-                                    <li class="nk-tb-action-hidden">
-                                        <a href="#" class="btn btn-trigger btn-icon" data-toggle="tooltip" data-placement="top" title="Suspend">
-                                            <em class="icon ni ni-user-cross-fill"></em>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <div class="drodown">
-                                            <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <ul class="link-list-opt no-bdr">
-                                                    <li><a href="html/ecommerce/customer-details.html"><em class="icon ni ni-eye"></em><span>View Details</span></a></li>
-                                                    <li><a href="#"><em class="icon ni ni-repeat"></em><span>Orders</span></a></li>
-                                                    <li><a href="#"><em class="icon ni ni-activity-round"></em><span>Activities</span></a></li>
-                                                    <li class="divider"></li>
-                                                    <li><a href="#"><em class="icon ni ni-shield-star"></em><span>Reset Pass</span></a></li>
-                                                    <li><a href="#"><em class="icon ni ni-na"></em><span>Suspend</span></a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div><!-- .nk-tb-item -->
-                        <div class="nk-tb-item">
-                            <div class="nk-tb-col nk-tb-col-check">
-                                <div class="custom-control custom-control-sm custom-checkbox notext">
-                                    <input type="checkbox" class="custom-control-input" id="uid7">
-                                    <label class="custom-control-label" for="uid7"></label>
-                                </div>
-                            </div>
-                            <div class="nk-tb-col">
-                                <div class="user-card">
-                                    <div class="user-avatar bg-warning">
-                                        <span>VL</span>
-                                    </div>
-                                    <div class="user-info">
-                                        <span class="tb-lead">Victoria Lynch <span class="dot dot-success d-md-none ml-1"></span></span>
-                                        <span>victoria@example.com</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="nk-tb-col tb-col-mb">
-                                <span class="tb-amount">59,400.68 <span class="currency">USD</span></span>
-                            </div>
-                            <div class="nk-tb-col tb-col-md">
-                                <span>+811 985-4846</span>
-                            </div>
-                            <div class="nk-tb-col tb-col-lg">
-                                <span>India</span>
-                            </div>
-                            <div class="nk-tb-col tb-col-lg">
-                                <span>15 Jan 2020</span>
-                            </div>
-                            <div class="nk-tb-col tb-col-md">
-                                <span class="tb-status text-success">Active</span>
-                            </div>
-                            <div class="nk-tb-col nk-tb-col-tools">
-                                <ul class="nk-tb-actions gx-1">
-                                    <li class="nk-tb-action-hidden">
-                                        <a href="#" class="btn btn-trigger btn-icon" data-toggle="tooltip" data-placement="top" title="Send Email">
-                                            <em class="icon ni ni-mail-fill"></em>
-                                        </a>
-                                    </li>
-                                    <li class="nk-tb-action-hidden">
-                                        <a href="#" class="btn btn-trigger btn-icon" data-toggle="tooltip" data-placement="top" title="Suspend">
-                                            <em class="icon ni ni-user-cross-fill"></em>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <div class="drodown">
-                                            <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <ul class="link-list-opt no-bdr">
-                                                    <li><a href="html/ecommerce/customer-details.html"><em class="icon ni ni-eye"></em><span>View Details</span></a></li>
-                                                    <li><a href="#"><em class="icon ni ni-repeat"></em><span>Orders</span></a></li>
-                                                    <li><a href="#"><em class="icon ni ni-activity-round"></em><span>Activities</span></a></li>
-                                                    <li class="divider"></li>
-                                                    <li><a href="#"><em class="icon ni ni-shield-star"></em><span>Reset Pass</span></a></li>
-                                                    <li><a href="#"><em class="icon ni ni-na"></em><span>Suspend</span></a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div><!-- .nk-tb-item -->
-                        <div class="nk-tb-item">
-                            <div class="nk-tb-col nk-tb-col-check">
-                                <div class="custom-control custom-control-sm custom-checkbox notext">
-                                    <input type="checkbox" class="custom-control-input" id="uid8">
-                                    <label class="custom-control-label" for="uid8"></label>
-                                </div>
-                            </div>
-                            <div class="nk-tb-col">
-                                <div class="user-card">
-                                    <div class="user-avatar bg-success">
-                                        <span>PN</span>
-                                    </div>
-                                    <div class="user-info">
-                                        <span class="tb-lead">Patrick Newman <span class="dot dot-success d-md-none ml-1"></span></span>
-                                        <span>patrick@example.com</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="nk-tb-col tb-col-mb">
-                                <span class="tb-amount">30.00 <span class="currency">USD</span></span>
-                            </div>
-                            <div class="nk-tb-col tb-col-md">
-                                <span>+942 238-4474</span>
-                            </div>
-                            <div class="nk-tb-col tb-col-lg">
-                                <span>United Kindom</span>
-                            </div>
-                            <div class="nk-tb-col tb-col-lg">
-                                <span>08 Jan 2020</span>
-                            </div>
-                            <div class="nk-tb-col tb-col-md">
-                                <span class="tb-status text-success">Active</span>
-                            </div>
-                            <div class="nk-tb-col nk-tb-col-tools">
-                                <ul class="nk-tb-actions gx-1">
-                                    <li class="nk-tb-action-hidden">
-                                        <a href="#" class="btn btn-trigger btn-icon" data-toggle="tooltip" data-placement="top" title="Send Email">
-                                            <em class="icon ni ni-mail-fill"></em>
-                                        </a>
-                                    </li>
-                                    <li class="nk-tb-action-hidden">
-                                        <a href="#" class="btn btn-trigger btn-icon" data-toggle="tooltip" data-placement="top" title="Suspend">
-                                            <em class="icon ni ni-user-cross-fill"></em>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <div class="drodown">
-                                            <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <ul class="link-list-opt no-bdr">
-                                                    <li><a href="html/ecommerce/customer-details.html"><em class="icon ni ni-eye"></em><span>View Details</span></a></li>
-                                                    <li><a href="#"><em class="icon ni ni-repeat"></em><span>Orders</span></a></li>
-                                                    <li><a href="#"><em class="icon ni ni-activity-round"></em><span>Activities</span></a></li>
-                                                    <li class="divider"></li>
-                                                    <li><a href="#"><em class="icon ni ni-shield-star"></em><span>Reset Pass</span></a></li>
-                                                    <li><a href="#"><em class="icon ni ni-na"></em><span>Suspend</span></a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div><!-- .nk-tb-item -->
-                        <div class="nk-tb-item">
-                            <div class="nk-tb-col nk-tb-col-check">
-                                <div class="custom-control custom-control-sm custom-checkbox notext">
-                                    <input type="checkbox" class="custom-control-input" id="uid9">
-                                    <label class="custom-control-label" for="uid9"></label>
-                                </div>
-                            </div>
-                            <div class="nk-tb-col">
-                                <div class="user-card">
-                                    <div class="user-avatar">
-                                        <img src="./images/avatar/d-sm.jpg" alt="">
-                                    </div>
-                                    <div class="user-info">
-                                        <span class="tb-lead">Jane Harris <span class="dot dot-warning d-md-none ml-1"></span></span>
-                                        <span>harris@example.com</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="nk-tb-col tb-col-mb">
-                                <span class="tb-amount">5,530.23 <span class="currency">USD</span></span>
-                            </div>
-                            <div class="nk-tb-col tb-col-md">
-                                <span>+123 447-2384</span>
-                            </div>
-                            <div class="nk-tb-col tb-col-lg">
-                                <span>Bangladesh</span>
-                            </div>
-                            <div class="nk-tb-col tb-col-lg">
-                                <span>02 Jan 2020</span>
-                            </div>
-                            <div class="nk-tb-col tb-col-md">
-                                <span class="tb-status text-warning">Pending</span>
-                            </div>
-                            <div class="nk-tb-col nk-tb-col-tools">
-                                <ul class="nk-tb-actions gx-1">
-                                    <li class="nk-tb-action-hidden">
-                                        <a href="#" class="btn btn-trigger btn-icon" data-toggle="tooltip" data-placement="top" title="Send Email">
-                                            <em class="icon ni ni-mail-fill"></em>
-                                        </a>
-                                    </li>
-                                    <li class="nk-tb-action-hidden">
-                                        <a href="#" class="btn btn-trigger btn-icon" data-toggle="tooltip" data-placement="top" title="Suspend">
-                                            <em class="icon ni ni-user-cross-fill"></em>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <div class="drodown">
-                                            <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <ul class="link-list-opt no-bdr">
-                                                    <li><a href="html/ecommerce/customer-details.html"><em class="icon ni ni-eye"></em><span>View Details</span></a></li>
-                                                    <li><a href="#"><em class="icon ni ni-repeat"></em><span>Orders</span></a></li>
-                                                    <li><a href="#"><em class="icon ni ni-activity-round"></em><span>Activities</span></a></li>
-                                                    <li class="divider"></li>
-                                                    <li><a href="#"><em class="icon ni ni-shield-star"></em><span>Reset Pass</span></a></li>
-                                                    <li><a href="#"><em class="icon ni ni-na"></em><span>Suspend</span></a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div><!-- .nk-tb-item -->
-                        <div class="nk-tb-item">
-                            <div class="nk-tb-col nk-tb-col-check">
-                                <div class="custom-control custom-control-sm custom-checkbox notext">
-                                    <input type="checkbox" class="custom-control-input" id="uid10">
-                                    <label class="custom-control-label" for="uid10"></label>
-                                </div>
-                            </div>
-                            <div class="nk-tb-col">
-                                <div class="user-card">
-                                    <div class="user-avatar bg-purple">
-                                        <span>EW</span>
-                                    </div>
-                                    <div class="user-info">
-                                        <span class="tb-lead">Emma Walker <span class="dot dot-success d-md-none ml-1"></span></span>
-                                        <span>walker@example.com</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="nk-tb-col tb-col-mb">
-                                <span class="tb-amount">55.00 <span class="currency">USD</span></span>
-                            </div>
-                            <div class="nk-tb-col tb-col-md">
-                                <span>+463 471-7173</span>
-                            </div>
-                            <div class="nk-tb-col tb-col-lg">
-                                <span>India</span>
-                            </div>
-                            <div class="nk-tb-col tb-col-lg">
-                                <span>25 Dec 2019</span>
-                            </div>
-                            <div class="nk-tb-col tb-col-md">
-                                <span class="tb-status text-success">Active</span>
-                            </div>
-                            <div class="nk-tb-col nk-tb-col-tools">
-                                <ul class="nk-tb-actions gx-1">
-                                    <li class="nk-tb-action-hidden">
-                                        <a href="#" class="btn btn-trigger btn-icon" data-toggle="tooltip" data-placement="top" title="Send Email">
-                                            <em class="icon ni ni-mail-fill"></em>
-                                        </a>
-                                    </li>
-                                    <li class="nk-tb-action-hidden">
-                                        <a href="#" class="btn btn-trigger btn-icon" data-toggle="tooltip" data-placement="top" title="Suspend">
-                                            <em class="icon ni ni-user-cross-fill"></em>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <div class="drodown">
-                                            <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <ul class="link-list-opt no-bdr">
-                                                    <li><a href="html/ecommerce/customer-details.html"><em class="icon ni ni-eye"></em><span>View Details</span></a></li>
-                                                    <li><a href="#"><em class="icon ni ni-repeat"></em><span>Orders</span></a></li>
-                                                    <li><a href="#"><em class="icon ni ni-activity-round"></em><span>Activities</span></a></li>
-                                                    <li class="divider"></li>
-                                                    <li><a href="#"><em class="icon ni ni-shield-star"></em><span>Reset Pass</span></a></li>
-                                                    <li><a href="#"><em class="icon ni ni-na"></em><span>Suspend</span></a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div><!-- .nk-tb-item -->
+                        {/foreach}
+                        {/if}
+
                     </div><!-- .nk-tb-list -->
                     <div class="card">
                         <div class="card-inner">
@@ -785,7 +207,7 @@
                                     <div class="form-group">
                                         <label class="form-label">是否开启</label>
                                         <div class="form-control-wrap  custom-switch">
-                                            <input type="checkbox" class="custom-control-input" checked id="user_status"  value="1">
+                                            <input type="checkbox" class="custom-control-input" checked id="user_status"  value="2">
                                             <label class="custom-control-label"  for="user_status">开启</label>
                                         </div>
                                     </div>
@@ -813,6 +235,93 @@
 </style>
 <script src="/demo/src/assets/js/public.js"></script>
 <script type="application/javascript">
+    var exit_id="";
+    function list_change() {
+        let status=$("#list_search").val();
+        let keyword=$("#keyword").val();
+        window.location.href="/admin/user/index?status="+status+"&keyword="+keyword;
+    }
+    /**
+     * 用户详情
+     * @param id
+     */
+    function user_info(id){
+        exit_id=id;
+        $.ajax({
+            url: '/admin/user/user_info',
+            type : "post",
+            data:{"id":id},
+            dataType : "json",
+            success : function(data) {
+                let user_info=data.data.user_info;
+                $("#user_group").val(user_info.group_id).trigger("change");
+                $("#user_name").val(user_info.name);
+                $("#user_phone").val(user_info.phone);
+                $("#avatar").val(user_info.avatar);
+                if(user_info.status==2){
+                    $("#user_status").prop("checked",true);
+                }else{
+                    $("#user_status").prop("checked",false);
+                }
+                $("#add_user").modal();
+            }
+        });
+    }
+
+    /**
+     * 用户禁用/启用
+     * @param id
+     */
+    function user_disable(id){
+        $.ajax({
+            url: '/admin/user/user_disable',
+            type : "post",
+            data:{"id":id},
+            dataType : "json",
+            success : function(data) {
+                if(data.error){
+                    toast(data.message,"error");
+                }else{
+                    toast(data.message,"","",function () {
+                        window.location.reload();
+                    });
+                }
+            }
+        });
+    }
+
+    /**
+     * 用户删除
+     * @param id
+     */
+    function user_del(id){
+        Swal.fire({
+            title: '确定删除吗？',
+            text: "删除后无法还原！",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes'
+        }).then(function (result) {
+            if (result.value) {
+                $.ajax({
+                    url: '/admin/user/user_del',
+                    type : "post",
+                    data:{"id":id},
+                    dataType : "json",
+                    success : function(data) {
+                        if(data.error){
+                            toast(data.message,"error");
+                        }else{
+                            toast(data.message,"","",function () {
+                                window.location.reload();
+                            });
+                        }
+                    }
+                });
+            }
+        });
+
+    }
     window.onload=function () {
         $("#avatar_div").click(function(){
             $("#avatar").trigger("click");
@@ -834,6 +343,17 @@
                 }
             }
         });
+        //模态框隐藏的时候初始化表单
+        $('#add_user').on('hide.bs.modal', function () {
+            $("#user_group").val(0).trigger("change");
+            $("#user_name").val("");
+            $("#user_password").val("");
+            $("#user_password2").val("");
+            $("#user_phone").val("");
+            $("#avatar").val("");
+            load_end("submint");
+            exit_id=""
+        })
         $("#user_sub").validate({
             rules:
                 {
@@ -844,7 +364,6 @@
                         },
                     user_password:
                         {
-                            required: true,
                             minlength: 6,
                             maxlength: 15,
                         },
@@ -867,7 +386,6 @@
                         },
                     user_password:
                         {
-                            required: "请填写密码",
                             minlength: "密码不能少于6位",
                             maxlength: "密码不能多于15位",
                         },
@@ -883,30 +401,29 @@
                 },
             submitHandler:function (form) {
                 load_add("submint");
-                console.log("验证通过");
-                return ;
+                if(!$("#user_password").val()&&!exit_id){
+                    toast("请填写密码","error");
+                }
                 $.ajax({
-                    url : "/admin/auth/add",
+                    url : "/admin/user/add",
                     type : "post",
                     dataType : "json",
                     data: {
                         id:exit_id,
-                        title:$("#option_title").val(),
-                        type: $("#option_type").val(),
-                        parent_id: $("#option_parent_id").val(),
-                        icon: $("#option_icon_val").val(),
-                        name: $("#option_name").val(),
-                        status: $("#option_status:checked").val(),
-                        is_show: $("#option_show:checked").val(),
-                        sort: $("#option_sort").val(),
+                        group:$("#user_group").val(),
+                        name: $("#user_name").val(),
+                        phone: $("#user_phone").val(),
+                        password: $("#user_password").val(),
+                        avatar: $("#avatar").val(),
+                        status: $("#user_status:checked").val(),
                     },
                     success : function(data) {
                         load_end("submint");
                         if(data.status==200){
-                            toast(data.message);
-                            $('#compose-mail').modal('hide')
-                            list();
-                            parent_opad();
+                            toast(data.message,"success","",function () {
+                                window.location.reload()
+                            });
+                            $('#add_user').modal('hide')
                         }else{
                             toast(data.message,"error");
                         }

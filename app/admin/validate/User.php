@@ -22,11 +22,14 @@ class User extends Validate
         "password:max"=>"密码不能多于15位",
         "phone:require"=>"请填写管理员手机号",
         "group:require"=>"请选择分组",
+        "id:require"=>"参数错误",
     ];
     public function sceneUserAdd(){
         return $this->append("name","require|max:15")
-            ->append("password","require|min:6|max:15")
             ->append("phone","require")
             ->append("group","require");
+    }
+    public function sceneUserInfo(){
+        return $this->append("id","require");
     }
 }
