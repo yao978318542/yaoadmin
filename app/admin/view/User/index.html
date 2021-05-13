@@ -772,9 +772,6 @@
                                         <div class="form-control-wrap">
                                             <select class="form-select form-control form-control-lg" id="user_group" name="user_group">
                                                 <option value="0">请选择</option>
-                                                <option value="1">主菜单</option>
-                                                <option value="2">子菜单</option>
-                                                <option value="3">功能</option>
                                             </select>
                                         </div>
                                     </div>
@@ -788,8 +785,8 @@
                                     <div class="form-group">
                                         <label class="form-label">是否开启</label>
                                         <div class="form-control-wrap  custom-switch">
-                                            <input type="checkbox" class="custom-control-input" checked id="option_status"  value="1">
-                                            <label class="custom-control-label"  for="option_status">开启</label>
+                                            <input type="checkbox" class="custom-control-input" checked id="user_status"  value="1">
+                                            <label class="custom-control-label"  for="user_status">开启</label>
                                         </div>
                                     </div>
 
@@ -866,7 +863,7 @@
                     user_name:
                         {
                             required: "用户名称不能为空",
-                            maxlength: "不能大于15位"
+                            maxlength: "用户名称不能大于15位"
                         },
                     user_password:
                         {

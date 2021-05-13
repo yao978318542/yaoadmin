@@ -11,6 +11,7 @@ namespace app\admin\controller;
 
 use app\admin\AdminBase;
 use think\facade\View;
+use think\facade\Db;
 use  app\admin\model\User as UserModel;
 use app\admin\model\Auth;
 
@@ -35,5 +36,39 @@ class User extends AdminBase
         $auth=new Auth();
         $data=$auth->auth_group("id,title");
         return $this->success("",["data"=>$data]);
+    }
+    function add(){
+        $id=input("post.id/d","");
+        $name=input("post.name/s","");
+        $phone=input("post.phone/d","");
+        $password=input("post.password/s","");
+        $group=input("post.group/d","");
+        $avatar=input("post.avatar/s","");
+        $status=input("post.status/d","");
+        $res_validate = $this->validateList(input(), 'User.UserAdd');
+        if ($res_validate !== true) {
+            return $res_validate;
+        }else{
+            if(!verify_phone($phone)){
+                return $this->error("10000","手机号格式错误");
+            }
+            $group_info=Db::name("auth_group")->where(["status"=>1,"id"=>$group])->find();
+            if(empty($group_info)){
+                return $this->error("10000","请选择正确的分组");
+            }
+            $save_data=[
+                "group_id"=>$group,
+                "name"=>$name,
+                "phone"=>$phone,
+                "password"=>$password,
+                "avatar"=>$avatar,
+                "status"=>$status,
+            ];
+            if($id){
+                Db::name("user")->where(["id"=>$id])->update($save_data);
+            }else{
+
+            }
+        }
     }
 }
