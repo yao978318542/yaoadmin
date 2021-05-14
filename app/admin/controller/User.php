@@ -86,6 +86,7 @@ class User extends AdminBase
             }
             if($id){
                 Db::name("user")->where(["id"=>$id])->update($save_data);
+                Db::name("auth_group_access")->where(["uid"=>$id])->update(["group_id"=>$group]);
             }else{
                 $Validate = new Validate();
                 $Validate->rule('password', 'require|min:6|max:15')
@@ -94,7 +95,8 @@ class User extends AdminBase
                     return $this->validateError($Validate->getError());
                 }
                 $save_data["password"]=password_hash($password,PASSWORD_DEFAULT);
-                Db::name("user")->insert($save_data);
+                $id=Db::name("user")->insertGetId($save_data);
+                Db::name("auth_group_access")->insert(["uid"=>$id,"group_id"=>$group]);
             }
             return $this->success('操作成功');
         }

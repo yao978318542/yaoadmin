@@ -16,6 +16,7 @@
     <!-- JavaScript -->
     <script src="/demo/src/assets/js/bundle.js?ver=2.2.0"></script>
     <script src="/demo/src/assets/js/scripts.js?ver=2.2.0"></script>
+    <script src="/demo/src/assets/js/public.js"></script>
 </head>
 
 <body class="nk-body bg-lighter npc-default has-sidebar ">
@@ -311,10 +312,15 @@
                                     <a href="#" class="dropdown-toggle mr-n1" data-toggle="dropdown">
                                         <div class="user-toggle">
                                             <div class="user-avatar sm">
+                                                {if !$user_info['avatar']}
                                                 <em class="icon ni ni-user-alt"></em>
+                                                {else/}
+                                                <img src="{$user_info['avatar']}"/>
+                                                {/if}
+
                                             </div>
                                             <div class="user-info d-none d-xl-block">
-                                                <div class="user-status user-status-unverified">Unverified</div>
+                                                <div class="user-status user-status-unverified">{$user_info['name']}</div>
                                                 <div class="user-name dropdown-indicator">Abu Bin Ishityak</div>
                                             </div>
                                         </div>
@@ -341,7 +347,7 @@
                                         </div>
                                         <div class="dropdown-inner">
                                             <ul class="link-list">
-                                                <li><a href="#"><em class="icon ni ni-signout"></em><span>Sign out</span></a></li>
+                                                <li onclick="login_out()"><a href="#"><em class="icon ni ni-signout"></em><span>Sign out</span></a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -379,6 +385,25 @@
 </div>
 <!-- app-root @e -->
 
+<script type="application/javascript">
+    function login_out(){
+        $.ajax({
+            url: "/admin/login/login_out",
+            type: "post",
+            dataType: "json",
+            success: function (data) {
+
+                if(data.status){
+                    toast(data.message,"error");
+                }else{
+                    toast(data.message,"","",function () {
+                        window.location.href=data.url;
+                    });
+                }
+            }
+        })
+    }
+</script>
 </body>
 
 </html>

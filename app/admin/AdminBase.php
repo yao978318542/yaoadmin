@@ -18,8 +18,6 @@ class AdminBase extends BaseController
 
     public function initialize()
     {
-        session('uid',1);
-        session('user_info',["group_id"=>1]);
         if(!session('uid')){
             $url = url('admin/login/index',["tip"=>1])->domain(true);
             header("location:" . $url);
@@ -41,6 +39,7 @@ class AdminBase extends BaseController
                 session('menu',$menu);
             }
         }
+        View::assign('user_info',session("user_info"));
         View::assign('menu',$menu);
     }
     /**
