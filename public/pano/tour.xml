@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<krpano>
+    <!-- grid preview pano -->
+    
+    
+    <scene name="scene374669">
+        <preview type="grid(cube,64,64,512,0xCCCCCC,0xF6F6F6,0x999999);" />
+    
+        <!-- view/fov settings -->
+        <view hlookat="0" vlookat="0" fovtype="VFOV" fov="90" fovmin="30" fovmax="150" />
+    
+    </scene>
+    <action name="loaddata">
+        loadxml(%1);
+        loadscene(scene374669)
+    </action>
+    <!--右键菜单-->
+    <contextmenu fullscreen="false" devices="desktop" native="false" versioninfo="false" customstyle="calc:'default|default|default|'+(skin_settings.design_bgcolor BOR (((1.0-skin_settings.design_bgalpha)*0xFF) LSHT 24))+'|0xFFFFFF|0xBBBBBB|0|0|1|0|4|10|0xB3000000|0|0|0|0|0|0xAAFFFFFF|none|11|0|0|0|0|0x717a83|'+skin_settings.design_bgcolor+'|0|0|8'">
+        <item name="add_hotspot" caption="[img src='//live.kuleiman.com/static/pano/xml/images/1.png' style='margin:2px 10px 0 0;']热点" onclick="jscall()" devices="html5" />
+    </contextmenu>
+</krpano>

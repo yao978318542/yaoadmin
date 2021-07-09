@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zxx" class="js">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="author" content="Softnio">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="A powerful and conceptual apps base dashboard template that especially build for developers and programmers.">
+    <title>全景展示</title>
+    <script src="/static/js/jquery-3.2.1.min.js"></script>
+    <script src="/pano/krpano.js"></script>
+    <script type="application/javascript">
+        var member_id="{$member_id}";
+        var krpano;
+        var panoxml={};
+        var FilePath = "/pano/xml/";
+        var FilePathPublic = "/static/scene/public/";
+    </script>
+    <link rel="stylesheet" href="/demo/src/assets/css/dashlite.css?ver=2.2.0">
+    <link id="skin-default" rel="stylesheet" href="/demo/src/assets/css/theme.css?ver=2.2.0">
+    <!-- JavaScript -->
+    <script src="/demo/src/assets/js/bundle.js?ver=2.2.0"></script>
+    <script src="/demo/src/assets/js/scripts.js?ver=2.2.0"></script>
+    <script src="/demo/src/assets/js/public.js"></script>
+    <script src="/pano/edit/js/common.js"></script>
+</head>
+<body>
+<div id="pano" style="width:100%;height:100%;position:fixed;">
+    <noscript>
+        <table style="width:100%;height:100%;">
+            <tr style="vertical-align:middle;">
+                <td>
+                    <div style="text-align:center;">
+                        <br/>同创蓝天投资（北京）有限公司<br/>720全景<br/>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </noscript>
+</div>
+<div style="
+    width: 390px;
+    height: 100%;
+    background: #fff;
+    position: fixed;
+    right: 0;
+    transform: translateX(100%);
+    transition: transform .3s ease-in-out;
+    transform: none;
+    box-shadow: -7px 1px 5px 0px rgb(54 74 99 / 5%);
+    border-left: 1px solid #fff;
+">
+
+</div>
+<script type="application/javascript">
+    function satrt_pano() {
+        $.ajax({
+            url: "/home/xml/index",
+            data:{'member_id':member_id},
+            type: "POST",
+            dataType:'json',
+            async:false,
+            success:function(data){
+                panoxml['onstart']="loaddata("+data+")";
+                embedpano({
+                    swf:"krpano.swf",
+                    xml:"/pano/tour.xml",
+                    target:"pano",
+                    html5: "auto",
+                    wmode: "transparent",
+                    initvars: {
+                        FilePath: FilePath,
+                        FilePathPublic: FilePathPublic,
+                    },
+                    webglsettings:{
+                        preserveDrawingBuffer:true,
+                        depth:true,
+                        stencil:true,
+                    },
+                    passQueryParameters: true,
+                    vars: panoxml,
+                    onready: function() {
+                        krpano = document.getElementById("krpanoSWFObject");
+                        console.log("场景准备就绪");
+                    }
+                });
+            }
+        });
+    }
+    satrt_pano();
+</script>
+</body>
+</html>

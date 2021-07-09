@@ -5580,6 +5580,8 @@ input[type="radio"]:checked ~ label { cursor: default; }
 .modal-dialog-top { align-items: flex-start; }
 
 .modal.fade .modal-dialog-top { transform: translate(0, -30px); }
+.modal-dialog-right{justify-content: flex-end;}
+.modal.fade .modal-dialog-right { transform: translate(-30px, 0); }
 
 .modal-dialog-bottom { align-items: flex-end; }
 
